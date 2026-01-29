@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop All Gadgets | GadgetWorld - Smartphones, Laptops, Audio & Gaming</title>
+    <meta name="description" content="Browse our collection of gadgets and tech products. Find smartphones, laptops, wearables, audio equipment and gaming gear at great prices. Fast delivery!">
+    <meta name="keywords" content="shop gadgets, smartphones, laptops, audio, gaming, electronics, tech products, buy gadgets online">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="GadgetWorld">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourdomain.com/shop/">
+    <meta property="og:title" content="Shop All Gadgets | GadgetWorld">
+    <meta property="og:description" content="Browse our collection of gadgets and tech products at great prices.">
+    <meta property="og:image" content="https://yourdomain.com{% static 'logo.png' %}">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://yourdomain.com/shop/">
+    <meta name="twitter:title" content="Shop All Gadgets | GadgetWorld">
+    <meta name="twitter:description" content="Browse our collection of gadgets and tech products.">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://yourdomain.com/shop/">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar container">
+        <a href="{% url 'home' %}" class="logo">Gadget</a>
+        <div class="search-bar">
+          <input type="text" placeholder="Search for gadgets..." />
+          <button type="submit"><i class="fas fa-search"></i></button>
+        </div>
+        <ul class="nav-links">
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'shop' %}" class="active">Shop</a></li>
+        </ul>
+        <div class="nav-icons">
+          <div class="cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count">0</span>
+          </div>
+          <button class="theme-toggle-btn" aria-label="Toggle Theme">
+            <i class="fas fa-sun"></i>
+            <i class="fas fa-moon"></i>
+          </button>
+          <button class="menu-toggle" aria-label="Toggle Menu">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="shop-page container">
+        <h1>Our Products</h1>
+
+        <div class="shop-controls">
+          <div class="filter-control">
+            <label for="category-filter">Filter by Category:</label>
+            <select id="category-filter" name="category">
+              <option value="all">All Categories</option>
+              <option value="smartphones">Smartphones</option>
+              <option value="laptops">Laptops</option>
+              <option value="tablets">Tablets</option>
+              <option value="audio">Audio</option>
+              <option value="cameras">Cameras</option>
+              <option value="wearables">Wearables</option>
+              <option value="gaming">Gaming</option>
+              <option value="accessories">Accessories</option>
+            </select>
+          </div>
+          <div class="sort-control">
+            <label for="sort-options">Sort by:</label>
+            <select id="sort-options" name="sort">
+              <option value="default">Default</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="name-asc">Name: A-Z</option>
+              <option value="name-desc">Name: Z-A</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="product-grid-shop" class="product-grid">
+          {% for product in products %}
+          <div class="product-card" data-id="{{ product.id }}" data-category="{{ product.category }}" data-name="{{ product.name }}" data-price="{{ product.price }}">
+               <img src="{{ product.imageSrc }}" alt="{{ product.name }}">
+               <h3>{{ product.name }}</h3>
+               <p class="price">${{ product.price }}{% if product.unit %} <span>{{ product.unit }}</span>{% endif %}</p>
+          </div>
+          {% empty %}
+          <p class="no-products">No products found matching your criteria.</p>
+          {% endfor %}
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          &copy; <span id="current-year"></span> GadgetWorld. All rights reserved.
+        </p>
+      </div>
+    </footer>
+
+    <button class="scroll-top-btn" aria-label="Scroll to top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <div id="cart-modal" class="modal">
+      <div class="modal-content">
+        <button class="close-modal-btn" aria-label="Close cart popup">
+          &times;
+        </button>
+        <h2>Shopping Cart</h2>
+        <div id="cart-items-container">
+          <p class="cart-empty-msg" style="display: none">
+            Your cart is empty.
+          </p>
+        </div>
+        <div class="cart-summary">
+          <strong>Subtotal:</strong> <span id="cart-subtotal">$0.00</span>
+        </div>
+        <div class="cart-actions">
+          <button class="btn btn-primary checkout-btn">
+            Proceed to Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="product-detail-modal" class="modal">
+        <div class="modal-content product-detail-content">
+            <button class="close-modal-btn" aria-label="Close product details">&times;</button>
+            <div id="product-detail-container">
+                </div>
+        </div>
+    </div>
+
+    {% autoescape off %}
+    <script>
+      // Pass Django products to JavaScript
+      const products = [
+        {% for product in products %}
+        {
+          "id": "{{ product.id }}",
+          "name": "{{ product.name|escapejs }}",
+          "category": "{{ product.category|escapejs }}",
+          "price": {{ product.price|default:"0" }},
+          "unit": "{{ product.unit|escapejs }}",
+          "description": "{{ product.description|escapejs }}",
+          "imageSrc": "{{ product.imageSrc|escapejs }}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      ];
+    </script>
+    {% endautoescape %}
+    <script src="{% static 'script.js'%}"></script>
+  </body>
+</html>
+
