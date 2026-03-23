@@ -24,12 +24,20 @@ class Product(models.Model):
     class Meta:
         ordering = ['id']
 
-"""class Promotion(models.Model):
+class Promotion(models.Model):
     title = models.CharField(max_length=400)
-    description = models.TextField()
+    description = models.TextField(blank=True)
+    features = models.TextField(blank=True, help_text="Enter features as bullet points, one per line")
+    button_text = models.CharField(max_length=100, default="View Deals", blank=True)
+    button_link = models.URLField(max_length=500, default="/shop/", blank=True)
+    active = models.BooleanField(default=True, help_text="Show on home page?")
+    order = models.PositiveIntegerField(default=0, help_text="Lower numbers appear first")
+    
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['created_at']
+        ordering = ['order', 'created_at']
+        verbose_name_plural = "Promotions"
 
     def __str__(self):
         return self.title
@@ -38,5 +46,3 @@ class Product(models.Model):
         if self.features:
             return [f.strip() for f in self.features.split('\n') if f.strip()]
         return []
-
-"""

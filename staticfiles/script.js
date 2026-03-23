@@ -382,9 +382,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const categoryFilter = document.getElementById('category-filter');
     const sortOptions = document.getElementById('sort-options');
     const productGridShop = document.getElementById('product-grid-shop');
+    const searchInput = document.querySelector('.search-bar input');
+    const searchButton = document.querySelector('.search-bar button');
+    
     if (categoryFilter && sortOptions && productGridShop) {
          if (typeof products !== 'undefined') {
             console.log("Setting up Shop Page...");
+            
+            // Function to get URL parameter
+            function getUrlParameter(name) {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(name);
+            }
+            
+            // Pre-fill search input from URL parameter
+            const urlSearchTerm = getUrlParameter('search');
+            if (urlSearchTerm && searchInput) {
+                searchInput.value = urlSearchTerm;
+            }
+            
+            // Pre-select category filter from URL parameter
+            const urlCategory = getUrlParameter('category');
+            if (urlCategory && categoryFilter) {
+                categoryFilter.value = urlCategory;
+            }
+            
+            // Pre-select sort from URL parameter
+            const urlSort = getUrlParameter('sort');
+            if (urlSort && sortOptions) {
+                sortOptions.value = urlSort;
+            }
+            
             // Define display and filter/sort functions locally
             function displayShopProducts(productsToDisplay) {
                 if (!productGridShop) return;
@@ -392,10 +420,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     ? '<p class="no-products">No products found matching your criteria.</p>'
                     : productsToDisplay.map(renderProductCardHTML).join(''); // Uses updated card renderer
             }
+            
             const filterAndSortProducts = () => {
                 const selectedCategory = categoryFilter.value;
                 const selectedSort = sortOptions.value;
-                let filtered = products.filter(p => selectedCategory === 'all' || p.category === selectedCategory);
+                const searchTerm = (searchInput ? searchInput.value : '').toLowerCase().trim();
+                
+                let filtered = products.filter(p => {
+                    // Category filter
+                    const categoryMatch = selectedCategory === 'all' || p.category === selectedCategory;
+                    // Search filter - search in name and description
+                    const searchMatch = searchTerm === '' || 
+                        p.name.toLowerCase().includes(searchTerm) || 
+                        (p.description && p.description.toLowerCase().includes(searchTerm));
+                    return categoryMatch && searchMatch;
+                });
+                
                 filtered.sort((a, b) => {
                     const nameA = a.name.toLowerCase(); const nameB = b.name.toLowerCase();
                     const priceA = a.price; const priceB = b.price;
@@ -409,9 +449,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 displayShopProducts(filtered);
             };
+            
             // Attach listeners and render initial state
             categoryFilter.addEventListener('change', filterAndSortProducts);
             sortOptions.addEventListener('change', filterAndSortProducts);
+            
+            // Search functionality
+            if (searchButton) {
+                searchButton.addEventListener('click', filterAndSortProducts);
+            }
+            if (searchInput) {
+                searchInput.addEventListener('keyup', (e) => {
+                    if (e.key === 'Enter') {
+                        filterAndSortProducts();
+                    }
+                    // Live search as you type
+                    filterAndSortProducts();
+                });
+            }
+            
             filterAndSortProducts(); // Initial render
             // Attach the grid click handler AFTER initial rendering
             productGridShop.addEventListener('click', handleProductGridClick);
@@ -419,6 +475,29 @@ document.addEventListener('DOMContentLoaded', () => {
              console.error("Shop grid: 'products' array missing. Load products.js first.");
              productGridShop.innerHTML = '<p class="no-products">Error loading product data.</p>';
          }
+    }
+    
+    // --- Homepage Search Functionality ---
+    const homepageSearchInput = document.querySelector('#home .search-bar input');
+    const homepageSearchButton = document.querySelector('#home .search-bar button');
+    
+    if (homepageSearchInput && homepageSearchButton) {
+        homepageSearchButton.addEventListener('click', () => {
+            const searchTerm = homepageSearchInput.value.toLowerCase().trim();
+            if (searchTerm) {
+                // Redirect to shop page with search query
+                window.location.href = `{% url 'shop' %}?search=${encodeURIComponent(searchTerm)}`;
+            }
+        });
+        
+        homepageSearchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                const searchTerm = homepageSearchInput.value.toLowerCase().trim();
+                if (searchTerm) {
+                    window.location.href = `{% url 'shop' %}?search=${encodeURIComponent(searchTerm)}`;
+                }
+            }
+        });
     }
 
     // --- Modal Open/Close Listeners ---

@@ -1,292 +1,124 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
+{% extends 'base.html' %}
 
-    {% load static %}
+{% block title %}Curated - Your Tech Store | Latest Gadgets Delivered Daily{% endblock %}
+{% block meta_description %}Discover the latest smartphones, laptops, audio gear, and gaming accessories. GadgetWorld delivers tech products to your doorstep. Shop now for the best deals!{% endblock %}
+{% block og_title %}GadgetWorld - Your Tech Store{% endblock %}
+{% block og_description %}Latest tech gadgets delivered daily. Shop smartphones, laptops, audio and gaming gear.{% endblock %}
+{% block canonical %}/{% endblock %}
 
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GadgetWorld - Your Tech Store | Latest Gadgets Delivered Daily</title>
-    <meta name="description" content="Discover the latest smartphones, laptops, audio gear, and gaming accessories. GadgetWorld delivers tech products to your doorstep. Shop now for the best deals!">
-    <meta name="keywords" content="gadgets, smartphones, laptops, audio, gaming, electronics, tech store, wearables, cameras, accessories">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="GadgetWorld">
-    <meta name="revisit-after" content="7 days">
-    
-    <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yourdomain.com/">
-    <meta property="og:title" content="GadgetWorld - Your Tech Store">
-    <meta property="og:description" content="Latest tech gadgets delivered daily. Shop smartphones, laptops, audio & gaming gear at great prices.">
-    <meta property="og:image" content="https://yourdomain.com{% static 'logo.png' %}">
-    <meta property="og:site_name" content="GadgetWorld">
-    
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@gadgetworld">
-    <meta name="twitter:url" content="https://yourdomain.com/">
-    <meta name="twitter:title" content="GadgetWorld - Your Tech Store">
-    <meta name="twitter:description" content="Latest tech gadgets delivered daily. Shop smartphones, laptops, audio & gaming gear.">
-    <meta name="twitter:image" content="https://yourdomain.com{% static 'logo.png' %}">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
-    <link rel="apple-touch-icon" href="{% static 'apple-touch-icon.png' %}">
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://yourdomain.com/">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Poppins:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="{% static 'style.css' %}" />
-    <link rel="stylesheet" href="{% static 'footer.css' %}">
-  </head>
-  <body>
-    <header class="header">
-      <nav class="navbar container">
-        <a href="{% url 'home' %}" class="logo">Curated</a>
-        <div class="search-bar">
-          <input type="text" placeholder="Search for groceries, gadgets,clothes etc..." />
-          <button type="submit"><i class="fas fa-search"></i></button>
-        </div>
-        <ul class="nav-links">
-          <li><a href="{% url 'home' %}" class="active">Home</a></li>
-          <li><a href="{% url 'shop' %}">Shop</a></li>
-          <li><a href="{% url 'about' %}">About</a></li>
-          <li><a href="{% url 'contact' %}">Contact</a></li>
-        </ul>
-        <div class="nav-icons">
-          <div class="cart-icon">
-            <i class="fas fa-shopping-cart"></i>
-            <span class="cart-count">0</span>
-          </div>
-          <button class="theme-toggle-btn" aria-label="Toggle Theme">
-            <i class="fas fa-sun"></i> <i class="fas fa-moon"></i>
-          </button>
-          <button class="menu-toggle" aria-label="Toggle Menu">
-            <i class="fas fa-bars"></i>
-          </button>
-        </div>
-      </nav>
-    </header>
+{% block content %}
+<section id="home" class="hero-section">
+  <div class="container hero-content">
+    <h1>Shop all your items in one place</h1>
+    <p>
+      Get the best smartphones, laptops, wearables, and accessories delivered to
+      your doorstep.
+    </p>
+    <a href="{% url 'shop' %}" class="btn btn-primary">Shop Now</a>
+  </div>
+</section>
 
-    <main>
-      <section id="home" class="hero-section">
-        <div class="container hero-content">
-          <h1>Latest Tech Delivered Daily</h1>
-          <p>
-            Get the best smartphones, laptops, wearables, and accessories delivered to
-            your doorstep.
-          </p>
-          <a href="{% url 'shop' %}" class="btn btn-primary">Shop Now</a>
-        </div>
-      </section>
-
-      <section class="category-section container">
-        <h2>Shop by Category</h2>
-        <div class="category-grid">
-          <div class="category-card">
-            <a href="{% url 'shop' %}?category=smartphones" class="category-link">
-              <img
-                src="https://images.pexels.com/photos/129208/pexels-photo-129208.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                alt="Smartphones"
-              />
-              <h3>Smartphones</h3>
-            </a>
-          </div>
-
-          <div class="category-card">
-            <a href="{% url 'shop' %}?category=groceries" class="category-link">
-              <img
-                src="https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                alt="groceries"
-              />
-              <h3>Grocery</h3>
-            </a>
-          </div>
-
-           <div class="category-card">
-            <a href="{% url 'shop' %}?category=footwear" class="category-link">
-              <img
-                src="https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                alt="Footwear"
-              />
-              <h3>Footwear</h3>
-            </a>
-          </div>
-
-          <div class="category-card">
-            <a href="{% url 'shop' %}?category=laptops" class="category-link">
-              <img
-                src="https://images.pexels.com/photos/1181243/pexels-photo-1181243.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                alt="Laptops"
-              />
-              <h3>Laptops</h3>
-            </a>
-          </div>
-
-        </div>
-      </section>
-
-      <section class="promotional-section">
-        <div class="container promo-content">
-          <h2>Tech Deals!</h2>
-          <p>Get up to 20% off on selected gadgets this week.</p>
-          <a href="{% url 'shop' %}" class="btn btn-secondary">View Deals</a>
-        </div>
-      </section>
-
-      <section id="featured" class="featured-products container">
-        <h2>Bestsellers</h2>
-        <div id="bestseller-grid" class="product-grid">
-          {% for product in bestsellers %}
-          <div class="product-card" data-id="{{ product.id }}" data-category="{{ product.category }}" data-name="{{ product.name }}" data-price="{{ product.price }}">
-               <img src="{{ product.imageSrc }}" alt="{{ product.name }}">
-               <h3>{{ product.name }}</h3>
-               <p class="price">${{ product.price }}{% if product.unit %} <span>{{ product.unit }}</span>{% endif %}</p>
-          </div>
-          {% empty %}
-          <p class="no-products">No bestsellers found.</p>
-          {% endfor %}
-        </div>
-      </section>
-
-      <section
-        id="product-detail-placeholder"
-        class="container page-section"
-        style="display: none"
-      >
-        <h2>Product Detail Page</h2>
-        <p>
-          Details about a specific product would go here (image zoom,
-          description, specs, etc.)
-        </p>
-      </section>
-
-      <section
-        id="cart-placeholder"
-        class="container page-section"
-        style="display: none"
-      >
-        <h2>Shopping Cart</h2>
-        <p>
-          List of selected items, quantity adjustments, subtotal, and checkout
-          button would be here.
-        </p>
-      </section>
-    </main>
-
-     <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-about">
-                    <h3>BsoftDigital</h3>
-                    <p>We are a Zimbabwe-based tech startup dedicated to delivering innovative digital solutions that empower businesses and drive growth. From web development to mobile apps and digital strategy, we're your trusted technology partner.</p>
-                </div>
-                
-                <div class="footer-links">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="{% url 'shop' %}">Products</a></li>
-        
-                    </ul>
-                </div>
-                
-                <div class="footer-links">
-                    <h4>Services</h4>
-                    <ul>
-                        <li><a href="{% url 'contact' %}">Consulting</a></li>
-                        <li><a href="{% url 'contact' %}">Get a Quote</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-links">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="#privacy">Privacy Policy</a></li>
-                        <li><a href="#terms">Terms & Conditions</a></li>
-                        <li><a href="{% url 'contact' %}">Contact Us</a></li>
-                    </ul>
-                </div>
-            </div>
-             <div class="footer-bottom">
-                <p>&copy;<span id="current-year"></span> Curated. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-  
-
-    <button class="scroll-top-btn" aria-label="Scroll to top">
-      <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <div id="cart-modal" class="modal">
-      <div class="modal-content">
-        <button class="close-modal-btn" aria-label="Close cart popup">
-          &times;
-        </button>
-        <h2>Shopping Cart</h2>
-        <div id="cart-items-container">
-          <p class="cart-empty-msg" style="display: none">
-            Your cart is empty.
-          </p>
-        </div>
-        <div class="cart-summary">
-          <strong>Subtotal:</strong> <span id="cart-subtotal">$0.00</span>
-        </div>
-        <div class="cart-actions">
-          <button class="btn btn-primary checkout-btn">
-            Proceed to Checkout
-          </button>
-        </div>
-      </div>
-    </div>
-    <div id="product-detail-modal" class="modal">
-        <div class="modal-content product-detail-content">
-            <button class="close-modal-btn" aria-label="Close product details">&times;</button>
-            <div id="product-detail-container">
-                </div>
-        </div>
+<section class="category-section container">
+  <h2>Shop by Category</h2>
+  <div class="category-grid">
+    <div class="category-card">
+      <a href="{% url 'shop' %}?category=smartphones" class="category-link">
+        <img
+          src="https://images.pexels.com/photos/129208/pexels-photo-129208.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          alt="Smartphones"
+        />
+        <h3>Smartphones</h3>
+      </a>
     </div>
 
-    {% autoescape off %}
-    <script>
-      // Pass Django products to JavaScript
-      const products = [
-        {% for product in products %}
-        {
-          "id": "{{ product.id }}",
-          "name": "{{ product.name|escapejs }}",
-          "category": "{{ product.category|escapejs }}",
-          "price": {{ product.price|default:"0" }},
-          "unit": "{{ product.unit|escapejs }}",
-          "description": "{{ product.description|escapejs }}",
-          "imageSrc": "{{ product.imageSrc|escapejs }}"
-        }{% if not forloop.last %},{% endif %}
-        {% endfor %}
-      ];
-      
-      const bestsellerIds = [
-        {% for product in bestsellers %}
-        '{{ product.id }}'{% if not forloop.last %},{% endif %}
-        {% endfor %}
-      ];
-    </script>
-    {% endautoescape %}
-    <script src="{% static 'script.js'%}"></script>
-  </body>
-</html>
+    <div class="category-card">
+      <a href="{% url 'shop' %}?category=groceries" class="category-link">
+        <img
+          src="https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          alt="Groceries"
+        />
+        <h3>Grocery</h3>
+      </a>
+    </div>
+
+    <div class="category-card">
+      <a href="{% url 'shop' %}?category=footwear" class="category-link">
+        <img
+          src="https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          alt="Footwear"
+        />
+        <h3>Footwear</h3>
+      </a>
+    </div>
+
+    <div class="category-card">
+      <a href="{% url 'shop' %}?category=laptops" class="category-link">
+        <img
+          src="https://images.pexels.com/photos/1181243/pexels-photo-1181243.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          alt="Laptops"
+        />
+        <h3>Laptops</h3>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="promotional-section">
+  <div class="container promo-content">
+    {% if promotion %}
+    <h2>{{ promotion.title }}</h2>
+    <p>{{ promotion.description }}</p>
+    <a href="{{ promotion.button_link }}" class="btn btn-secondary">{{ promotion.button_text }}</a>
+    {% else %}
+    <h2>Check out our deals!</h2>
+    <p>Great offers await in our store.</p>
+    <a href="{% url 'shop' %}" class="btn btn-secondary">Shop Now</a>
+    {% endif %}
+  </div>
+</section>
+
+<section id="featured" class="featured-products container">
+  <h2>Bestsellers</h2>
+  <div id="bestseller-grid" class="product-grid">
+    {% for product in bestsellers %}
+    <div class="product-card" data-id="{{ product.id }}" data-category="{{ product.category }}" data-name="{{ product.name }}" data-price="{{ product.price }}">
+      <img src="{{ product.imageSrc }}" alt="{{ product.name }}">
+      <h3>{{ product.name }}</h3>
+      <p class="price">${{ product.price }}{% if product.unit %} <span>{{ product.unit }}</span>{% endif %}</p>
+    </div>
+    {% empty %}
+    <p class="no-products">No bestsellers found.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="product-detail-placeholder" class="container page-section" style="display: none">
+  <h2>Product Detail Page</h2>
+  <p>
+    Details about a specific product would go here (image zoom, description,
+    specs, etc.)
+  </p>
+</section>
+
+<section id="cart-placeholder" class="container page-section" style="display: none">
+  <h2>Shopping Cart</h2>
+  <p>
+    List of selected items, quantity adjustments, subtotal, and checkout button
+    would be here.
+  </p>
+</section>
+{% endblock %}
+
+{% block page_data %}
+{% autoescape off %}
+<script>
+  const products = [
+    {% for product in products %}
+    {"id": "{{ product.id }}", "name": "{{ product.name|escapejs }}", "category": "{{ product.category|escapejs }}", "price": {{ product.price|default:"0" }}, "unit": "{{ product.unit|escapejs }}", "description": "{{ product.description|escapejs }}", "imageSrc": "{{ product.imageSrc|escapejs }}"}{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ];
+  const bestsellerIds = [{% for product in bestsellers %}'{{ product.id }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
+</script>
+{% endautoescape %}
+{% endblock %}
 

@@ -1,33 +1,20 @@
-# TODO: Transform Grocery Store to Electronic & Gadget Store
+# Admin-Editable Promotion Section Implementation
 
-## Phase 1: Database Model Setup
-- [x] Create Product model in gadget1/models.py (electronic/gadget categories)
-- [ ] Create data migration to populate gadgets from JS array
+Status: In Progress
 
-## Phase 2: Update Products Data
-- [x] Update products.js with electronic/gadget products
+## Approved Plan Steps:
 
-## Phase 3: View Updates
-- [ ] Update views.py to query products from database
-- [ ] Pass products as context to templates
+### 1. Create/Enhance Promotion model in gadget1/models.py ✅ **DONE**
 
-## Phase 4: URL Updates
-- [ ] Update gadget1/urls.py (change shop.html to shop/)
-- [ ] Update navigation links in templates
+### 2. Update gadget1/admin.py to register PromotionAdmin ✅ **DONE**
 
-## Phase 5: Template Updates
-- [ ] Update index.html with gadget store branding and Django templating
-- [ ] Update shop.html with gadget product grid
-- [ ] Update product card design for gadgets
+### 3. Update gadget1/views.py to pass promotion to index context ✅ TODO
+### 3. Update gadget1/views.py to pass promotion to index context ✅ **DONE**
+### 4. Update templates/index.html to render dynamic promotion ✅ **DONE**
+### 5. Run migrations: python manage.py makemigrations gadget1 && python manage.py migrate
+### 6. Create admin user if needed: python manage.py createsuperuser
+### 7. Add initial promotion in /admin/
+### 8. Test: python manage.py runserver
 
-## Phase 6: Styling Updates
-- [ ] Update style.css for gadget store theme
-- [ ] Update category section for gadgets
-
-## Phase 7: JavaScript Integration
-- [ ] Update script.js to work with Django context products
-
-## Phase 8: Final Steps
-- [ ] Run makemigrations and migrate
-- [ ] Test the application
+**Next step: Run migrations and test**
 

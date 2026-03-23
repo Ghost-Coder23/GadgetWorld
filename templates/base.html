@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}GadgetWorld - Your Tech Store{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Discover latest gadgets at GadgetWorld.{% endblock %}">
+    <meta name="keywords" content="gadgets, smartphones, laptops, tech store">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{% block og_title %}GadgetWorld{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Latest tech gadgets.{% endblock %}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="{% block canonical %}{% endblock %}">
+    {% block extra_meta %}{% endblock %}
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'footer.css' %}">
+    
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar container">
+        <a href="{% url 'home' %}" class="logo">Curated</a>
+        <div class="search-bar">
+          <input type="text" placeholder="Search for groceries, gadgets,clothes etc..." />
+          <button type="submit"><i class="fas fa-search"></i></button>
+        </div>
+        <ul class="nav-links">
+          <li><a href="{% url 'home' %}" {% if request.resolver_match.url_name == 'home' %}class="active"{% endif %}>Home</a></li>
+          <li><a href="{% url 'shop' %}" {% if request.resolver_match.url_name == 'shop' %}class="active"{% endif %}>Shop</a></li>
+          <li><a href="{% url 'about' %}" {% if request.resolver_match.url_name == 'about' %}class="active"{% endif %}>About</a></li>
+          <li><a href="{% url 'contact' %}" {% if request.resolver_match.url_name == 'contact' %}class="active"{% endif %}>Contact</a></li>
+        </ul>
+        <div class="nav-icons">
+          <div class="cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count">0</span>
+          </div>
+          <button class="theme-toggle-btn" aria-label="Toggle Theme">
+            <i class="fas fa-sun"></i> <i class="fas fa-moon"></i>
+          </button>
+          <button class="menu-toggle" aria-label="Toggle Menu">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>Curated</h3>
+                    <p>Your trusted tech store for smartphones, laptops, and gadgets. Fast delivery across Zimbabwe.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'about' %}">About</a></li>
+                        <li><a href="{% url 'shop' %}">Shop</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="{% url 'contact' %}">Contact</a></li>
+                        <li><a href="#">Help</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
+                        <li><a href="{% url 'terms' %}">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> Curated. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button class="scroll-top-btn" aria-label="Scroll to top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <div id="cart-modal" class="modal">
+      <div class="modal-content">
+        <button class="close-modal-btn" aria-label="Close cart popup">&times;</button>
+        <h2>Shopping Cart</h2>
+        <div id="cart-items-container">
+          <p class="cart-empty-msg" style="display: none">Your cart is empty.</p>
+        </div>
+        <div class="cart-summary">
+          <strong>Subtotal:</strong> <span id="cart-subtotal">$0.00</span>
+        </div>
+        <div class="cart-actions">
+          <button class="btn btn-primary checkout-btn">Proceed to Checkout</button>
+        </div>
+      </div>
+    </div>
+    <div id="product-detail-modal" class="modal">
+      <div class="modal-content product-detail-content">
+        <button class="close-modal-btn" aria-label="Close product details">&times;</button>
+        <div id="product-detail-container"></div>
+      </div>
+    </div>
+
+    <div id="cookie-banner" class="cookie-banner" aria-live="polite" hidden>
+      <div class="cookie-banner__content">
+        <p class="cookie-banner__title">We use cookies</p>
+        <p class="cookie-banner__text">
+          We use essential cookies to keep the site working and optional cookies
+          for analytics and tracking, only with your permission.
+          <a href="{% url 'privacy' %}">Privacy Policy</a>
+        </p>
+      </div>
+      <div class="cookie-banner__actions">
+        <button type="button" class="cookie-banner__btn cookie-banner__btn--secondary" data-cookie-choice="declined">
+          Decline
+        </button>
+        <button type="button" class="cookie-banner__btn cookie-banner__btn--primary" data-cookie-choice="accepted">
+          Accept
+        </button>
+      </div>
+    </div>
+
+    {% block page_data %}{% endblock %}
+    <script src="{% static 'script.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

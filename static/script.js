@@ -8,6 +8,20 @@
  * Assumes products.js (with 'products' and 'bestsellerIds' arrays) is loaded first.
  */
 document.addEventListener('DOMContentLoaded', () => {
+    const COOKIE_CONSENT_KEY = 'curatedCookieConsent';
+
+    function applyCookieConsentState(consentValue) {
+        const trackingAllowed = consentValue === 'accepted';
+        document.documentElement.dataset.trackingConsent = trackingAllowed ? 'granted' : 'denied';
+        window.cookieConsent = {
+            value: consentValue,
+            trackingAllowed: trackingAllowed
+        };
+
+        document.dispatchEvent(new CustomEvent('cookieconsentchange', {
+            detail: window.cookieConsent
+        }));
+    }
 
     // --- Mobile Menu Toggle ---
     const menuToggle = document.querySelector('.menu-toggle');
@@ -79,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const productDetailModal = document.getElementById('product-detail-modal');
     const closeProductDetailModalBtn = productDetailModal ? productDetailModal.querySelector('.close-modal-btn') : null;
     const productDetailContainer = document.getElementById('product-detail-container');
+    const cookieBanner = document.getElementById('cookie-banner');
 
     let cart = []; // Initialize cart array
 
@@ -617,6 +632,37 @@ document.addEventListener('DOMContentLoaded', () => {
           });
       }
 
+
+    // --- Cookie Consent Banner ---
+    if (cookieBanner) {
+        const storedCookieConsent = localStorage.getItem(COOKIE_CONSENT_KEY);
+        const cookieButtons = cookieBanner.querySelectorAll('[data-cookie-choice]');
+
+        if (storedCookieConsent === 'accepted' || storedCookieConsent === 'declined') {
+            applyCookieConsentState(storedCookieConsent);
+        } else {
+            cookieBanner.hidden = false;
+            requestAnimationFrame(() => {
+                cookieBanner.classList.add('is-visible');
+            });
+        }
+
+        cookieButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                const choice = button.dataset.cookieChoice;
+                if (!choice) {
+                    return;
+                }
+
+                localStorage.setItem(COOKIE_CONSENT_KEY, choice);
+                applyCookieConsentState(choice);
+                cookieBanner.classList.remove('is-visible');
+                window.setTimeout(() => {
+                    cookieBanner.hidden = true;
+                }, 250);
+            });
+        });
+    }
 
     // ==================================
     // INITIALIZATION

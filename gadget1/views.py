@@ -1,16 +1,18 @@
 from django.shortcuts import render
 from django.db import models
-from .models import Product
+from .models import Product, Promotion
 
 # Create your views here.
 def index(request):
     # Get all products and bestsellers from database
     all_products = Product.objects.all()
     bestsellers = Product.objects.filter(is_bestseller=True)
+    promotion = Promotion.objects.filter(active=True).order_by('order').first()
     
     context = {
         'products': all_products,
         'bestsellers': bestsellers,
+        'promotion': promotion,
     }
     return render(request, 'index.html', context)
 
@@ -51,4 +53,10 @@ def about(request):
     return render(request, 'about.html')
 
 def contact(request):
-    return render(request,'contact.html')
+    return render(request, 'contact.html')
+
+def privacy_policy(request):
+    return render(request, 'privacy.html')
+
+def terms_and_conditions(request):
+    return render(request, 'terms.html')

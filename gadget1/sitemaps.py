@@ -20,11 +20,18 @@ class StaticViewSitemap(Sitemap):
     changefreq = 'monthly'
     
     def items(self):
-        return ['home', 'shop']
+        return ['home', 'shop', 'about', 'contact', 'privacy', 'terms']
     
     def location(self, view_name):
         if view_name == 'home':
             return '/'
         elif view_name == 'shop':
             return '/shop/'
-
+        elif view_name == 'about':
+            return '/about/'
+        elif view_name == 'contact':
+            return '/contact/'
+        elif view_name == 'privacy':
+            return '/privacy-policy/'
+        elif view_name == 'terms':
+            return '/terms-and-conditions/'
