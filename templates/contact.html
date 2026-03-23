@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+         {% load static %}
+
+        <title>Contact Us</title>
+        <link rel="stylesheet" href="{% static 'style.css' %}" />
+        <link rel="stylesheet" href="{% static 'contact.css' %}"/>
+        <link rel="stylesheet" href="{% static 'footer.css' %}">
+        
+    </head>
+    <body>
+            
+    <header class="header">
+      <nav class="navbar container">
+        <a href="{% url 'home' %}" class="logo">Curated</a>
+        <div class="search-bar">
+          <input type="text" placeholder="Search for gadgets..." />
+          <button type="submit"><i class="fas fa-search"></i></button>
+        </div>
+        <ul class="nav-links">
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'shop' %}">Shop</a></li>
+          <li><a href="{% url 'about'%}">About</a></li>
+          <li><a href="{% url 'contact'%}"class="active">Contact</a></li>
+        </ul>
+        <div class="nav-icons">
+          <div class="cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count">0</span>
+          </div>
+          <button class="theme-toggle-btn" aria-label="Toggle Theme">
+            <i class="fas fa-sun"></i>
+            <i class="fas fa-moon"></i>
+          </button>
+          <button class="menu-toggle" aria-label="Toggle Menu">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+
+     <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="section">
+            <h2 class="section-title fade-in">Initiate Your Transformation</h2>
+            <div class="contact-content">
+                <!-- <p>Ready to transcend conventional business boundaries? Let's architect your strategic future together.</p> -->
+                <form class="contact-form fade-in">
+                    <div class="contact-form-head">
+                        <h3>Contact Us</h3>
+                        <span>We usually reply within 24 hours.</span>
+                    </div>
+                    <div class="contact-fields">
+                        <div class="contact-field">
+                            <label for="contact-name">Name</label>
+                            <input id="contact-name" type="text" placeholder="Enter your name" required>
+                        </div>
+                        <div class="contact-field">
+                            <label for="contact-email">Email Address</label>
+                            <input id="contact-email" type="email" placeholder="Enter your email address" required>
+                        </div>
+                        <div class="contact-field contact-field-full">
+                            <label for="contact-message">Message</label>
+                            <textarea id="contact-message" placeholder="Leave Your message ..." required></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="contact-links">
+                <a href="mailto:info@senlageinvestments.com" class="contact-link-item">info@curated.com</a>
+                <a href="tel:+263770123456" class="contact-link-item">+263 77 012 3456</a>
+            </div>
+        </div>
+    </section>
+
+
+     <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>BsoftDigital</h3>
+                    <p>We are a Zimbabwe-based tech startup dedicated to delivering innovative digital solutions that empower businesses and drive growth. From web development to mobile apps and digital strategy, we're your trusted technology partner.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#portfolio">Portfolio</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#services">Web Development</a></li>
+                        <li><a href="#services">Mobile Apps</a></li>
+                        <li><a href="#services">Consulting</a></li>
+                        <li><a href="#contact">Get a Quote</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms & Conditions</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+             <div class="footer-bottom">
+                <p>&copy;<span id="current-year"></span> Curated. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    </body>
+</html>

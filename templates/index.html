@@ -48,18 +48,21 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
     <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <link rel="stylesheet" href="{% static 'footer.css' %}">
   </head>
   <body>
     <header class="header">
       <nav class="navbar container">
-        <a href="{% url 'home' %}" class="logo">Gadget</a>
+        <a href="{% url 'home' %}" class="logo">Curated</a>
         <div class="search-bar">
-          <input type="text" placeholder="Search for gadgets..." />
+          <input type="text" placeholder="Search for groceries, gadgets,clothes etc..." />
           <button type="submit"><i class="fas fa-search"></i></button>
         </div>
         <ul class="nav-links">
           <li><a href="{% url 'home' %}" class="active">Home</a></li>
           <li><a href="{% url 'shop' %}">Shop</a></li>
+          <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'contact' %}">Contact</a></li>
         </ul>
         <div class="nav-icons">
           <div class="cart-icon">
@@ -102,6 +105,26 @@
           </div>
 
           <div class="category-card">
+            <a href="{% url 'shop' %}?category=groceries" class="category-link">
+              <img
+                src="https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                alt="groceries"
+              />
+              <h3>Grocery</h3>
+            </a>
+          </div>
+
+           <div class="category-card">
+            <a href="{% url 'shop' %}?category=footwear" class="category-link">
+              <img
+                src="https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                alt="Footwear"
+              />
+              <h3>Footwear</h3>
+            </a>
+          </div>
+
+          <div class="category-card">
             <a href="{% url 'shop' %}?category=laptops" class="category-link">
               <img
                 src="https://images.pexels.com/photos/1181243/pexels-photo-1181243.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
@@ -111,25 +134,6 @@
             </a>
           </div>
 
-          <div class="category-card">
-            <a href="{% url 'shop' %}?category=audio" class="category-link">
-              <img
-                src="https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                alt="Audio"
-              />
-              <h3>Audio</h3>
-            </a>
-          </div>
-
-          <div class="category-card">
-            <a href="{% url 'shop' %}?category=gaming" class="category-link">
-              <img
-                src="https://images.pexels.com/photos/3165335/pexels-photo-3165335.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                alt="Gaming"
-              />
-              <h3>Gaming</h3>
-            </a>
-          </div>
         </div>
       </section>
 
@@ -181,13 +185,49 @@
       </section>
     </main>
 
-    <footer class="footer">
-      <div class="container">
-        <p>
-          &copy; <span id="current-year"></span> GadgetWorld. All rights reserved.
-        </p>
-      </div>
+     <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>BsoftDigital</h3>
+                    <p>We are a Zimbabwe-based tech startup dedicated to delivering innovative digital solutions that empower businesses and drive growth. From web development to mobile apps and digital strategy, we're your trusted technology partner.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="{% url 'shop' %}">Products</a></li>
+        
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="{% url 'contact' %}">Consulting</a></li>
+                        <li><a href="{% url 'contact' %}">Get a Quote</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms & Conditions</a></li>
+                        <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+             <div class="footer-bottom">
+                <p>&copy;<span id="current-year"></span> Curated. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
+
+  
 
     <button class="scroll-top-btn" aria-label="Scroll to top">
       <i class="fas fa-arrow-up"></i>

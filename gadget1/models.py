@@ -4,12 +4,9 @@ class Product(models.Model):
     CATEGORY_CHOICES = [
         ('smartphones', 'Smartphones'),
         ('laptops', 'Laptops'),
-        ('tablets', 'Tablets'),
-        ('audio', 'Audio'),
-        ('cameras', 'Cameras'),
-        ('wearables', 'Wearables'),
-        ('gaming', 'Gaming'),
         ('accessories', 'Accessories'),
+        ('grocery','Groceries'),
+        ('footwear','Footwear'),
     ]
     
     id = models.CharField(max_length=20, primary_key=True)
@@ -27,3 +24,19 @@ class Product(models.Model):
     class Meta:
         ordering = ['id']
 
+"""class Promotion(models.Model):
+    title = models.CharField(max_length=400)
+    description = models.TextField()
+
+    class Meta:
+        ordering = ['created_at']
+
+    def __str__(self):
+        return self.title
+    
+    def get_features_list(self):
+        if self.features:
+            return [f.strip() for f in self.features.split('\n') if f.strip()]
+        return []
+
+"""

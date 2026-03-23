@@ -47,3 +47,8 @@ def shop_view(request):
     }
     return render(request, 'shop.html', context)
 
+def about(request):
+    return render(request, 'about.html')
+
+def contact(request):
+    return render(request,'contact.html')

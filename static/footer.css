@@ -1,0 +1,57 @@
+
+        /* Footer */
+        footer {
+            background: rgba(43, 43, 51, 0.356);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            height: auto;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .footer-about h3 {
+            color: rgb(234, 240, 234);
+            margin-bottom: 1rem;
+        }
+        
+        .footer-about p {
+            color: rgba(255,255,255,0.7);
+            line-height: 1.7;
+        }
+        
+        .footer-links h4 {
+            margin-bottom: 1rem;
+            color: rgba(68, 68, 199, 0.644);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-links ul li a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links ul li a:hover {
+            color: rgb(194, 146, 58);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 1.5rem;
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+        }
+        

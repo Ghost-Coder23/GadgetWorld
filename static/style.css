@@ -1,6 +1,6 @@
 /* --- Base Styles & Variables --- */
 :root {
-    --primary-green: #4CAF50; /* Fresh green */
+    --primary-green: #44b444; /* Fresh green */
     --secondary-green: #8BC34A; /* Lighter green */
     --accent-yellow: #FFEB3B; /* Bright yellow */
     --earthy-brown: #A1887F; /* Soft brown */
@@ -570,17 +570,6 @@ body.dark-mode .product-card:hover {
 
 .contact-form button {
     align-self: flex-start; /* Align button to the left */
-}
-
-/* --- Footer --- */
-.footer {
-    background-color: var(--card-bg); /* Use card bg for contrast */
-    color: var(--text-color);
-    text-align: center;
-    padding: 1.5rem 0;
-    margin-top: 4rem;
-    border-top: 1px solid var(--border-color);
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 /* --- Scroll-to-Top Button --- */

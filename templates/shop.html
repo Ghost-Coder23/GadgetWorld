@@ -38,18 +38,21 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
     <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <link rel="stylesheet" href="{% static 'footer.css' %}">
   </head>
   <body>
     <header class="header">
       <nav class="navbar container">
-        <a href="{% url 'home' %}" class="logo">Gadget</a>
+        <a href="{% url 'home' %}" class="logo">Curated</a>
         <div class="search-bar">
-          <input type="text" placeholder="Search for gadgets..." />
+          <input type="text" placeholder="Search for groceries, gadgets,clothes etc..." />
           <button type="submit"><i class="fas fa-search"></i></button>
         </div>
         <ul class="nav-links">
           <li><a href="{% url 'home' %}">Home</a></li>
           <li><a href="{% url 'shop' %}" class="active">Shop</a></li>
+          <li><a href="{% url 'about'%}">About</a></li>
+          <li><a href="{% url 'contact'%}">Contact</a></li>
         </ul>
         <div class="nav-icons">
           <div class="cart-icon">
@@ -78,12 +81,9 @@
               <option value="all">All Categories</option>
               <option value="smartphones">Smartphones</option>
               <option value="laptops">Laptops</option>
-              <option value="tablets">Tablets</option>
-              <option value="audio">Audio</option>
-              <option value="cameras">Cameras</option>
-              <option value="wearables">Wearables</option>
-              <option value="gaming">Gaming</option>
               <option value="accessories">Accessories</option>
+              <option value="footwear">Footwear</option>
+              <option value=" groceries">Groceries</option>
             </select>
           </div>
           <div class="sort-control">
@@ -111,14 +111,49 @@
         </div>
       </section>
     </main>
-
-    <footer class="footer">
-      <div class="container">
-        <p>
-          &copy; <span id="current-year"></span> GadgetWorld. All rights reserved.
-        </p>
-      </div>
+     <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>Curated</h3>
+                    <p>We are a Zimbabwe-based tech startup dedicated to delivering innovative digital solutions that empower businesses and drive growth. From web development to mobile apps and digital strategy, we're your trusted technology partner.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="{% url 'about' %}">About</a></li>
+                        <li><a href="{% url 'shop' %}">Products</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#services">Web Development</a></li>
+                        <li><a href="#services">Mobile Apps</a></li>
+                        <li><a href="{% url 'contact' %}">Consulting</a></li>
+                        <li><a href="{% url 'contact' %}">Get a Quote</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms & Conditions</a></li>
+                        <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+             <div class="footer-bottom">
+                <p>&copy;<span id="current-year"></span> Curated. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
+   
 
     <button class="scroll-top-btn" aria-label="Scroll to top">
       <i class="fas fa-arrow-up"></i>

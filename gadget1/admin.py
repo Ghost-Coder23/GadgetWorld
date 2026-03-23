@@ -1,8 +1,11 @@
 from django.contrib import admin
 from .models import Product
+#from .models import Promotion
 
 # Register your models here.
 @admin.register(Product)
+#@admin.register(Promotion)
+
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'category', 'price', 'is_bestseller')
     list_filter = ('category', 'is_bestseller')
@@ -22,3 +25,5 @@ class ProductAdmin(admin.ModelAdmin):
             'fields': ('is_bestseller',),
         }),
     )
+#class PromotionAdmin(admin.ModelAdmin):
+   # list_display =('title','decription')

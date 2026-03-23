@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        {% load static %}
+
+        <title>About Us</title>
+        <link rel="stylesheet" href="{% static 'style.css' %}" />
+        <link rel="stylesheet" href="{% static 'about.css' %}" />
+        <link rel="stylesheet" href="{% static 'footer.css' %}">
+
+
+    </head>
+    <body>
+         
+     <header class="header">
+        <nav class="navbar container">
+            <a href="{% url 'home' %}" class="logo">Curated</a>
+            <div class="search-bar">
+            <input type="text" placeholder="Search for gadgets..." />
+            <button type="submit"><i class="fas fa-search"></i></button>
+            </div>
+            <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'shop' %}">Shop</a></li>
+            <li><a href="{% url 'about'%}" class="active">About</a></li>
+            <li><a href="{% url 'contact'%}">Contact</a></li>
+            </ul>
+            <div class="nav-icons">
+            <div class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </div>
+            <button class="theme-toggle-btn" aria-label="Toggle Theme">
+                <i class="fas fa-sun"></i>
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="menu-toggle" aria-label="Toggle Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            </div>
+        </nav>
+        </header>
+
+    
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="section about fade-in">
+            <div class="about-content">
+                <div class="highlight"></div>
+                <h2 class="mission-heading">
+                    <span class="mission-our">OUR</span>
+                    <span class="mission-word">MISSION</span>
+                </h2>
+                <p>At Curated Investments (Pvt) Ltd, our mission is to provide high-quality products and services supported by trusted client partnerships. We are committed to maintaining the highest health and safety standards while delivering practical, reliable solutions tailored to our clients' needs.</p>
+                <p>We strive for quick delivery without compromising quality, ensuring our customers receive dependable service every time.</p>
+                
+                <div class="about-features">
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">Quality & Excellence</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">Reliability & Professionalism</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">Hard Work & Commitment</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <div class="feature-text">Ethical Practices</div>
+                    </div>
+                </div>
+                
+                <p class="core-values-heading">
+                    <span class="core-word">CORE</span>
+                    <span class="values-card">VALUES</span>
+                </p>
+                <p>We function as a unified team with a shared purpose, focusing on customer satisfaction and social responsibility through teamwork, unity, honesty, transparency, and accountability.</p>
+            </div>
+            <div class="about-visual">
+                <div class="about-image">
+                    <div class="visual-shapes">
+                        <div class="visual-shape"></div>
+                        <div class="visual-shape"></div>
+                        <div class="visual-shape"></div>
+                    </div>
+                    <img src="{% static 'images/pic22.png' %}" alt="Senlage Investments">
+                </div>
+            </div>
+        </div>
+    </section>
+ <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>BsoftDigital</h3>
+                    <p>We are a Zimbabwe-based tech startup dedicated to delivering innovative digital solutions that empower businesses and drive growth. From web development to mobile apps and digital strategy, we're your trusted technology partner.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#portfolio">Portfolio</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#services">Web Development</a></li>
+                        <li><a href="#services">Mobile Apps</a></li>
+                        <li><a href="#services">Consulting</a></li>
+                        <li><a href="#contact">Get a Quote</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms & Conditions</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+             <div class="footer-bottom">
+                <p>&copy;<span id="current-year"></span> Curated. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    </body>
+</html> 
