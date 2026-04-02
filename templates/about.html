@@ -2,58 +2,95 @@
 {% load static %}
 
 {% block title %}About Us - Curated{% endblock %}
+{% block meta_description %}Learn about Curated, our mission, core values, and the customer-first approach behind our products and delivery experience.{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'about.css' %}" />
 {% endblock %}
 
 {% block content %}
-    <section id="about" class="about-section">
-        <div class="section about fade-in">
-            <div class="about-content">
-                <div class="highlight"></div>
-                <h2 class="mission-heading">
-                    <span class="mission-our">OUR</span>
-                    <span class="mission-word">MISSION</span>
-                </h2>
-                <p>At Curated Investments (Pvt) Ltd, our mission is to provide high-quality products and services supported by trusted client partnerships. We are committed to maintaining the highest health and safety standards while delivering practical, reliable solutions tailored to our clients' needs.</p>
-                <p>We strive for quick delivery without compromising quality, ensuring our customers receive dependable service every time.</p>
-                
-                <div class="about-features">
-                    <div class="feature-item">
-                        <div class="feature-icon">✓</div>
-                        <div class="feature-text">Quality & Excellence</div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">✓</div>
-                        <div class="feature-text">Reliability & Professionalism</div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">✓</div>
-                        <div class="feature-text">Hard Work & Commitment</div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">✓</div>
-                        <div class="feature-text">Ethical Practices</div>
+<section id="about" class="about-section">
+    <div class="container about-shell">
+        <div class="about-copy">
+            <p class="about-eyebrow">About Curated</p>
+            <h1 class="about-title">Built to make everyday shopping feel faster, smarter, and more dependable.</h1>
+            <p class="about-lead">
+                At Curated Investments (Pvt) Ltd, our mission is to provide high-quality products and services supported by trusted client partnerships. We are committed to maintaining strong service standards while delivering practical, reliable solutions tailored to our customers' needs.
+            </p>
+            <p class="about-body">
+                We focus on making shopping simple: quality products, dependable delivery, and a team that values clear communication from first click to final handoff.
+            </p>
+
+            <div class="about-actions">
+                <a href="{% url 'shop' %}" class="btn btn-primary">Browse Products</a>
+                <a href="{% url 'contact' %}" class="btn btn-secondary">Talk to Us</a>
+            </div>
+
+            <div class="about-features">
+                <div class="feature-item">
+                    <span class="feature-icon">01</span>
+                    <div class="feature-text">
+                        <strong>Quality & Excellence</strong>
+                        <p>We choose products and service standards that customers can trust.</p>
                     </div>
                 </div>
-                
-                <p class="core-values-heading">
-                    <span class="core-word">CORE</span>
-                    <span class="values-card">VALUES</span>
-                </p>
-                <p>We function as a unified team with a shared purpose, focusing on customer satisfaction and social responsibility through teamwork, unity, honesty, transparency, and accountability.</p>
-            </div>
-            <div class="about-visual">
-                <div class="about-image">
-                    <div class="visual-shapes">
-                        <div class="visual-shape"></div>
-                        <div class="visual-shape"></div>
-                        <div class="visual-shape"></div>
+                <div class="feature-item">
+                    <span class="feature-icon">02</span>
+                    <div class="feature-text">
+                        <strong>Reliability & Professionalism</strong>
+                        <p>We aim for a smooth buying experience from enquiry to delivery.</p>
                     </div>
-                    <img src="{% static 'images/pic22.png' %}" alt="Senlage Investments">
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">03</span>
+                    <div class="feature-text">
+                        <strong>Hard Work & Commitment</strong>
+                        <p>We move quickly, stay responsive, and follow through on customer needs.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">04</span>
+                    <div class="feature-text">
+                        <strong>Ethical Practices</strong>
+                        <p>We believe transparency, accountability, and honesty build lasting trust.</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+
+        <div class="about-visual">
+            <div class="about-stage">
+                <div class="about-stage__panel">
+                    <p class="about-stage__label">Our Promise</p>
+                    <h2>Dependable products backed by a customer-first team.</h2>
+                    <p>
+                        We function as a unified team with a shared purpose, focusing on customer satisfaction and social responsibility through teamwork, unity, honesty, transparency, and accountability.
+                    </p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card stat-card--wide">
+                        <span class="stat-number">Fast</span>
+                        <span class="stat-label">delivery-focused operations</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">4</span>
+                        <span class="stat-label">core values we work by</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">1</span>
+                        <span class="stat-label">shared standard for service quality</span>
+                    </div>
+                </div>
+
+                <div class="about-note">
+                    <p class="about-note__title">What makes us different</p>
+                    <p>
+                        Curated combines practical digital retail thinking with a service mindset, so customers get convenience without losing the human side of support.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

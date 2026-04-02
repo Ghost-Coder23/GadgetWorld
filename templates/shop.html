@@ -37,7 +37,7 @@
   <div id="product-grid-shop" class="product-grid">
     {% for product in products %}
     <div class="product-card" data-id="{{ product.id }}" data-category="{{ product.category }}" data-name="{{ product.name }}" data-price="{{ product.price }}">
-      <img src="{{ product.imageSrc }}" alt="{{ product.name }}">
+      <img src="{{ product.image_url }}" alt="{{ product.name }}">
       <h3>{{ product.name }}</h3>
       <p class="price">${{ product.price }}{% if product.unit %} <span>{{ product.unit }}</span>{% endif %}</p>
     </div>
@@ -53,7 +53,7 @@
 <script>
   const products = [
     {% for product in products %}
-    {"id": "{{ product.id }}", "name": "{{ product.name|escapejs }}", "category": "{{ product.category|escapejs }}", "price": {{ product.price|default:"0" }}, "unit": "{{ product.unit|escapejs }}", "description": "{{ product.description|escapejs }}", "imageSrc": "{{ product.imageSrc|escapejs }}"}{% if not forloop.last %},{% endif %}
+    {"id": "{{ product.id }}", "name": "{{ product.name|escapejs }}", "category": "{{ product.category|escapejs }}", "price": {{ product.price|default:"0" }}, "unit": "{{ product.unit|escapejs }}", "description": "{{ product.description|escapejs }}", "imageSrc": "{{ product.image_url|escapejs }}"}{% if not forloop.last %},{% endif %}
     {% endfor %}
   ];
 </script>

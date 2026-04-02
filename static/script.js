@@ -492,29 +492,6 @@ document.addEventListener('DOMContentLoaded', () => {
          }
     }
     
-    // --- Homepage Search Functionality ---
-    const homepageSearchInput = document.querySelector('#home .search-bar input');
-    const homepageSearchButton = document.querySelector('#home .search-bar button');
-    
-    if (homepageSearchInput && homepageSearchButton) {
-        homepageSearchButton.addEventListener('click', () => {
-            const searchTerm = homepageSearchInput.value.toLowerCase().trim();
-            if (searchTerm) {
-                // Redirect to shop page with search query
-                window.location.href = `{% url 'shop' %}?search=${encodeURIComponent(searchTerm)}`;
-            }
-        });
-        
-        homepageSearchInput.addEventListener('keyup', (e) => {
-            if (e.key === 'Enter') {
-                const searchTerm = homepageSearchInput.value.toLowerCase().trim();
-                if (searchTerm) {
-                    window.location.href = `{% url 'shop' %}?search=${encodeURIComponent(searchTerm)}`;
-                }
-            }
-        });
-    }
-
     // --- Modal Open/Close Listeners ---
     // Cart Modal
     if (cartIcon && cartModal && closeCartModalBtn) {
