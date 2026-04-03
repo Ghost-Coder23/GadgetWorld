@@ -49,6 +49,9 @@
         <div class="contact-form-panel">
             <form class="contact-form" method="post" action="{% url 'contact' %}">
                 {% csrf_token %}
+                {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+                {% endfor %}
                 <div class="contact-form-head">
                     <p class="contact-form-kicker">{% if prefilled_from_cart %}Order request{% else %}Send a message{% endif %}</p>
                     <h2>{% if prefilled_from_cart %}Your cart summary is ready to send.{% else %}We usually reply within 24 hours.{% endif %}</h2>
@@ -68,6 +71,22 @@
                 {% endif %}
 
                 <div class="contact-fields">
+                    {% if prefilled_from_cart %}
+                    <div class="contact-order-summary contact-field-full">
+                        <div class="contact-order-summary__head">
+                            <p class="contact-order-summary__title">Order summary</p>
+                            <strong>${{ prefilled_order_subtotal }}</strong>
+                        </div>
+                        <ul class="contact-order-summary__list">
+                            {% for item in prefilled_order_items %}
+                            <li>
+                                <span>{{ item.product.name }}</span>
+                                <span>x{{ item.quantity }} · ${{ item.line_total }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
                     <div class="contact-field">
                         <label for="{{ form.name.id_for_label }}">Full name</label>
                         {{ form.name }}

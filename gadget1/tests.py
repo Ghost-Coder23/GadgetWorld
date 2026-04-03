@@ -1,7 +1,9 @@
+import json
+
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import ContactSubmission, Product
+from .models import ContactSubmission, Order, Product
 
 
 class StaticPageTests(TestCase):
@@ -57,3 +59,37 @@ class ContactFlowTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(ContactSubmission.objects.count(), 1)
         self.assertContains(response, 'order request has been received')
+
+    def test_order_request_submission_creates_order_record(self):
+        product = Product.objects.first()
+
+        response = self.client.post(
+            reverse('contact'),
+            data={
+                'name': 'Taylor Buyer',
+                'email': 'taylor@example.com',
+                'phone': '+263770123456',
+                'topic': 'order',
+                'message': 'Please leave the package with reception if I am unavailable.',
+                'order_payload': json.dumps([{'id': product.pk, 'quantity': 2}]),
+            },
+            follow=True,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(ContactSubmission.objects.count(), 1)
+        self.assertEqual(Order.objects.count(), 1)
+
+        order = Order.objects.get()
+        self.assertEqual(order.customer_name, 'Taylor Buyer')
+        self.assertEqual(order.contact_submission.name, 'Taylor Buyer')
+        self.assertEqual(order.status, Order.STATUS_PENDING)
+        self.assertEqual(order.subtotal, product.price * 2)
+        self.assertEqual(order.items.count(), 1)
+
+        item = order.items.get()
+        self.assertEqual(item.product, product)
+        self.assertEqual(item.product_identifier, product.pk)
+        self.assertEqual(item.product_name, product.name)
+        self.assertEqual(item.quantity, 2)
+        self.assertContains(response, f'order #{order.pk}')

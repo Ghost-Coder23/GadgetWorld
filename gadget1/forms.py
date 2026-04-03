@@ -4,6 +4,8 @@ from .models import ContactSubmission
 
 
 class ContactSubmissionForm(forms.ModelForm):
+    order_payload = forms.CharField(required=False, widget=forms.HiddenInput())
+
     class Meta:
         model = ContactSubmission
         fields = ['name', 'email', 'phone', 'topic', 'message']
@@ -25,3 +27,6 @@ class ContactSubmissionForm(forms.ModelForm):
 
     def clean_message(self):
         return self.cleaned_data['message'].strip()
+
+    def clean_order_payload(self):
+        return self.cleaned_data['order_payload'].strip()

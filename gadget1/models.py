@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db import models
 from django.urls import reverse
 
@@ -88,3 +90,76 @@ class ContactSubmission(models.Model):
 
     def __str__(self):
         return f'{self.name} - {self.get_topic_display()}'
+
+
+class Order(models.Model):
+    STATUS_PENDING = 'pending'
+    STATUS_CONFIRMED = 'confirmed'
+    STATUS_PAID = 'paid'
+    STATUS_PROCESSING = 'processing'
+    STATUS_SHIPPED = 'shipped'
+    STATUS_DELIVERED = 'delivered'
+    STATUS_CANCELLED = 'cancelled'
+
+    STATUS_CHOICES = [
+        (STATUS_PENDING, 'Pending review'),
+        (STATUS_CONFIRMED, 'Confirmed'),
+        (STATUS_PAID, 'Paid'),
+        (STATUS_PROCESSING, 'Processing'),
+        (STATUS_SHIPPED, 'Shipped'),
+        (STATUS_DELIVERED, 'Delivered'),
+        (STATUS_CANCELLED, 'Cancelled'),
+    ]
+
+    contact_submission = models.OneToOneField(
+        'ContactSubmission',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='order',
+    )
+    customer_name = models.CharField(max_length=200)
+    email = models.EmailField()
+    phone = models.CharField(max_length=50, blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)
+    notes = models.TextField(blank=True)
+    subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'Order #{self.pk} - {self.customer_name}'
+
+    @property
+    def item_count(self):
+        return sum(item.quantity for item in self.items.all())
+
+    def recalculate_subtotal(self, *, save=True):
+        subtotal = sum((item.line_total for item in self.items.all()), Decimal('0.00'))
+        self.subtotal = subtotal
+        if save:
+            self.save(update_fields=['subtotal', 'updated_at'])
+        return subtotal
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True, related_name='order_items')
+    product_identifier = models.CharField(max_length=20)
+    product_name = models.CharField(max_length=200)
+    unit = models.CharField(max_length=50, blank=True, default='')
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.PositiveIntegerField(default=1)
+
+    class Meta:
+        ordering = ['id']
+
+    def __str__(self):
+        return f'{self.product_name} x{self.quantity}'
+
+    @property
+    def line_total(self):
+        return self.unit_price * self.quantity

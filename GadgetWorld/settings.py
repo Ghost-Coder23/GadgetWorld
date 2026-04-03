@@ -35,7 +35,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dev-only-secret-key-change-me')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env_bool('DJANGO_DEBUG', True)
 
-ALLOWED_HOSTS = env_list('DJANGO_ALLOWED_HOSTS') or (['localhost', '127.0.0.1', 'testserver'] if DEBUG else [])
+ALLOWED_HOSTS = env_list('DJANGO_ALLOWED_HOSTS') or (['localhost', '127.0.0.1', 'GadgetWorld.pythonanywhere.com',] if DEBUG else [])
 CSRF_TRUSTED_ORIGINS = env_list('DJANGO_CSRF_TRUSTED_ORIGINS')
 
 if not DEBUG and SECRET_KEY == 'dev-only-secret-key-change-me':
