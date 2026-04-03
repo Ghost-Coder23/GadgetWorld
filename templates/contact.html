@@ -3,6 +3,10 @@
 
 {% block title %}Contact Us - Curated{% endblock %}
 {% block meta_description %}Get in touch with Curated for product enquiries, delivery questions, support, or partnership opportunities.{% endblock %}
+{% block og_title %}Contact Curated{% endblock %}
+{% block og_description %}Get in touch for product guidance, order support, delivery questions, or quotes.{% endblock %}
+{% block canonical %}{{ request.scheme }}://{{ request.get_host }}{% url 'contact' %}{% endblock %}
+{% block og_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'contact' %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'contact.css' %}" />
@@ -43,46 +47,56 @@
         </div>
 
         <div class="contact-form-panel">
-            <form class="contact-form" method="post" action="#">
+            <form class="contact-form" method="post" action="{% url 'contact' %}">
                 {% csrf_token %}
                 <div class="contact-form-head">
-                    <p class="contact-form-kicker">Send a message</p>
-                    <h2>We usually reply within 24 hours.</h2>
+                    <p class="contact-form-kicker">{% if prefilled_from_cart %}Order request{% else %}Send a message{% endif %}</p>
+                    <h2>{% if prefilled_from_cart %}Your cart summary is ready to send.{% else %}We usually reply within 24 hours.{% endif %}</h2>
                     <p class="contact-form-intro">
+                        {% if prefilled_from_cart %}
+                        Review your details, add any delivery notes you want, and send the request. We will confirm availability and next steps.
+                        {% else %}
                         Leave your details and a short message and we will get back to you as soon as possible.
+                        {% endif %}
                     </p>
                 </div>
 
+                {% if form.non_field_errors %}
+                <div class="contact-form__status contact-form__status--error">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
+
                 <div class="contact-fields">
                     <div class="contact-field">
-                        <label for="contact-name">Full name</label>
-                        <input id="contact-name" name="name" type="text" placeholder="Enter your full name" required>
+                        <label for="{{ form.name.id_for_label }}">Full name</label>
+                        {{ form.name }}
+                        {% if form.name.errors %}<div class="field-errors">{{ form.name.errors }}</div>{% endif %}
                     </div>
                     <div class="contact-field">
-                        <label for="contact-email">Email address</label>
-                        <input id="contact-email" name="email" type="email" placeholder="Enter your email address" required>
+                        <label for="{{ form.email.id_for_label }}">Email address</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}<div class="field-errors">{{ form.email.errors }}</div>{% endif %}
                     </div>
                     <div class="contact-field">
-                        <label for="contact-phone">Phone number</label>
-                        <input id="contact-phone" name="phone" type="tel" placeholder="Enter your phone number">
+                        <label for="{{ form.phone.id_for_label }}">Phone number</label>
+                        {{ form.phone }}
+                        {% if form.phone.errors %}<div class="field-errors">{{ form.phone.errors }}</div>{% endif %}
                     </div>
                     <div class="contact-field">
-                        <label for="contact-topic">Topic</label>
-                        <select id="contact-topic" name="topic">
-                            <option value="general">General enquiry</option>
-                            <option value="order">Order support</option>
-                            <option value="delivery">Delivery question</option>
-                            <option value="quote">Quote request</option>
-                        </select>
+                        <label for="{{ form.topic.id_for_label }}">Topic</label>
+                        {{ form.topic }}
+                        {% if form.topic.errors %}<div class="field-errors">{{ form.topic.errors }}</div>{% endif %}
                     </div>
                     <div class="contact-field contact-field-full">
-                        <label for="contact-message">Message</label>
-                        <textarea id="contact-message" name="message" placeholder="Tell us how we can help..." required></textarea>
+                        <label for="{{ form.message.id_for_label }}">Message</label>
+                        {{ form.message }}
+                        {% if form.message.errors %}<div class="field-errors">{{ form.message.errors }}</div>{% endif %}
                     </div>
                 </div>
 
                 <div class="contact-form-actions">
-                    <button type="submit" class="submit-btn">Send Message</button>
+                    <button type="submit" class="submit-btn">{% if prefilled_from_cart %}Send Order Request{% else %}Send Message{% endif %}</button>
                     <p class="contact-form-footnote">By contacting us, you agree that we may respond using the details you provide.</p>
                 </div>
             </form>

@@ -5,7 +5,8 @@
 {% block meta_description %}Review the Terms & Conditions that govern use of the Curated website, purchases, orders, delivery, and customer responsibilities.{% endblock %}
 {% block og_title %}Terms & Conditions - Curated{% endblock %}
 {% block og_description %}Review the rules, purchase terms, limitations, and responsibilities that apply when using the Curated website.{% endblock %}
-{% block canonical %}/terms-and-conditions/{% endblock %}
+{% block canonical %}{{ request.scheme }}://{{ request.get_host }}{% url 'terms' %}{% endblock %}
+{% block og_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'terms' %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'legal.css' %}" />

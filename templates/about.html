@@ -3,6 +3,10 @@
 
 {% block title %}About Us - Curated{% endblock %}
 {% block meta_description %}Learn about Curated, our mission, core values, and the customer-first approach behind our products and delivery experience.{% endblock %}
+{% block og_title %}About Curated{% endblock %}
+{% block og_description %}Learn about Curated, our mission, and the standards behind our delivery and customer support.{% endblock %}
+{% block canonical %}{{ request.scheme }}://{{ request.get_host }}{% url 'about' %}{% endblock %}
+{% block og_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'about' %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'about.css' %}" />

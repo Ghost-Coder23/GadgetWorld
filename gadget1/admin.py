@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
-from .models import Product, Promotion
+from .models import ContactSubmission, Product, Promotion
 
 # Register your models here.
 @admin.register(Product)
@@ -63,3 +63,11 @@ class PromotionAdmin(admin.ModelAdmin):
         }),
     )
     readonly_fields = ('created_at',)
+
+
+@admin.register(ContactSubmission)
+class ContactSubmissionAdmin(admin.ModelAdmin):
+    list_display = ['name', 'email', 'topic', 'created_at']
+    list_filter = ['topic', 'created_at']
+    search_fields = ['name', 'email', 'message']
+    readonly_fields = ['created_at']

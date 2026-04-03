@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} | Curated{% endblock %}
+{% block meta_description %}{{ product.description|default:"Explore this product on Curated." }}{% endblock %}
+{% block og_title %}{{ product.name }} | Curated{% endblock %}
+{% block og_description %}{{ product.description|default:"Explore this product on Curated." }}{% endblock %}
+{% block canonical %}{{ request.scheme }}://{{ request.get_host }}{{ product.get_absolute_url }}{% endblock %}
+{% block og_url %}{{ request.scheme }}://{{ request.get_host }}{{ product.get_absolute_url }}{% endblock %}
+
+{% block content %}
+<section class="shop-page container product-page">
+  <div class="product-page__breadcrumb">
+    <a href="{% url 'shop' %}">Back to Shop</a>
+  </div>
+
+  <div id="product-detail-container" class="product-page__layout">
+    <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-detail-image">
+    <div class="product-detail-info">
+      <p class="product-detail-category">{{ product.category_label }}</p>
+      <h1 class="product-detail-name">{{ product.name }}</h1>
+      <p class="product-detail-price">${{ product.price }}{% if product.unit %} <span>{{ product.unit }}</span>{% endif %}</p>
+      <p class="product-detail-description">
+        {{ product.description|default:"This product is available through Curated. Contact us if you need stock confirmation, delivery timelines, or a quote." }}
+      </p>
+
+      <div class="product-page__actions">
+        <button type="button" class="btn btn-primary add-to-cart-btn" data-product-id="{{ product.id }}">Add to Cart</button>
+        <a href="{% url 'contact' %}?topic=quote&amp;message=I%20would%20like%20more%20details%20about%20{{ product.name|urlencode }}." class="btn btn-secondary">Ask About This Product</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

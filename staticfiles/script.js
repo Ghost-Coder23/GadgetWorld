@@ -1,13 +1,30 @@
 /**
  * script.js
- * Handles interactivity for the FreshMart Grocery Website Template.
- * Version: Includes dynamic Cart Modal Title update.
- * Includes: Mobile Menu, Theme Toggle, Scroll-to-Top,
- * Product Loading (Bestsellers, Shop Page), Filtering/Sorting,
- * Product Detail Modal, Shopping Cart Modal & Functionality.
- * Assumes products.js (with 'products' and 'bestsellerIds' arrays) is loaded first.
+ * Handles the main storefront interactions for Curated.
  */
 document.addEventListener('DOMContentLoaded', () => {
+    const productsDataElement = document.getElementById('products-data');
+    const bestsellerIdsDataElement = document.getElementById('bestseller-ids-data');
+    const products = productsDataElement ? JSON.parse(productsDataElement.textContent) : [];
+    const bestsellerIds = bestsellerIdsDataElement ? JSON.parse(bestsellerIdsDataElement.textContent) : [];
+    const shopUrl = document.body.dataset.shopUrl || '/shop/';
+    const contactUrl = document.body.dataset.contactUrl || '/contact/';
+    const COOKIE_CONSENT_KEY = 'curatedCookieConsent';
+    const CART_STORAGE_KEY = 'curatedCart';
+    const LEGACY_CART_STORAGE_KEY = 'freshmartCart';
+
+    function applyCookieConsentState(consentValue) {
+        const trackingAllowed = consentValue === 'accepted';
+        document.documentElement.dataset.trackingConsent = trackingAllowed ? 'granted' : 'denied';
+        window.cookieConsent = {
+            value: consentValue,
+            trackingAllowed: trackingAllowed
+        };
+
+        document.dispatchEvent(new CustomEvent('cookieconsentchange', {
+            detail: window.cookieConsent
+        }));
+    }
 
     // --- Mobile Menu Toggle ---
     const menuToggle = document.querySelector('.menu-toggle');
@@ -79,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const productDetailModal = document.getElementById('product-detail-modal');
     const closeProductDetailModalBtn = productDetailModal ? productDetailModal.querySelector('.close-modal-btn') : null;
     const productDetailContainer = document.getElementById('product-detail-container');
+    const cookieBanner = document.getElementById('cookie-banner');
 
     let cart = []; // Initialize cart array
 
@@ -86,14 +104,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // CART HELPER FUNCTIONS (LocalStorage, Counter Update)
     // ==================================
     function loadCart() {
-        const storedCart = localStorage.getItem('freshmartCart');
+        const storedCart = localStorage.getItem(CART_STORAGE_KEY) || localStorage.getItem(LEGACY_CART_STORAGE_KEY);
         if (storedCart) {
             try {
                 cart = JSON.parse(storedCart);
                 if (!Array.isArray(cart)) { // Basic validation
                      cart = [];
                      console.warn("Stored cart was not an array, resetting.");
-                     localStorage.removeItem('freshmartCart');
+                     localStorage.removeItem(CART_STORAGE_KEY);
+                     localStorage.removeItem(LEGACY_CART_STORAGE_KEY);
                 }
                 // Ensure quantities are numbers
                 cart = cart.map(item => ({ ...item, quantity: parseInt(item.quantity) || 1 }));
@@ -101,7 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 console.error("Error parsing cart from localStorage:", error);
                 cart = [];
-                localStorage.removeItem('freshmartCart');
+                localStorage.removeItem(CART_STORAGE_KEY);
+                localStorage.removeItem(LEGACY_CART_STORAGE_KEY);
             }
         } else {
             cart = [];
@@ -111,7 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function saveCart() {
         try {
-            localStorage.setItem('freshmartCart', JSON.stringify(cart));
+            localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+            localStorage.removeItem(LEGACY_CART_STORAGE_KEY);
         } catch (error) {
             console.error("Error saving cart to localStorage:", error);
             // Optionally notify the user that the cart couldn't be saved
@@ -129,8 +150,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // CORE CART LOGIC FUNCTIONS
     // ==================================
      function addToCart(productId, quantity = 1) {
-         if (typeof products === 'undefined') {
-            console.error("'products' array not found. Ensure products.js is loaded before script.js.");
+         if (!products.length) {
+            console.error("Product catalog is unavailable.");
             alert("Error: Could not load product data.");
             return;
         }
@@ -193,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==================================
     function displayCartItems() {
         // Ensure elements and product data are available
-        if (!cartItemsContainer || !cartSummaryDiv || !cartActionsDiv || !cartModalTitle || typeof products === 'undefined') {
+        if (!cartItemsContainer || !cartSummaryDiv || !cartActionsDiv || !cartModalTitle || !products.length) {
             console.error("DisplayCartItems: Critical elements (container, summary, actions, title) or products array missing.");
             if (cartModalTitle) cartModalTitle.textContent = "Error";
             if (cartItemsContainer) cartItemsContainer.innerHTML = '<p class="no-products">Error loading cart items.</p>';
@@ -218,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Replace checkout button with "Shop Now" link
             if (cartActionsDiv) {
-                 cartActionsDiv.innerHTML = `<a href="shop.html" class="btn btn-primary shop-now-link-btn">Shop Now</a>`;
+                 cartActionsDiv.innerHTML = `<a href="${shopUrl}" class="btn btn-primary shop-now-link-btn">Shop Now</a>`;
                  // Optional: Add listener to close modal when "Shop Now" is clicked
                  const shopNowBtn = cartActionsDiv.querySelector('.shop-now-link-btn');
                  if (shopNowBtn && cartModal) {
@@ -281,13 +302,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Ensure the button is the "Proceed to Checkout" button
             if (cartActionsDiv) {
-                 cartActionsDiv.innerHTML = `<button class="btn btn-primary checkout-btn">Proceed to Checkout</button>`;
+                 cartActionsDiv.innerHTML = `<button type="button" class="btn btn-primary checkout-btn">Request Order</button>`;
             }
         }
     }
 
     function displayProductDetail(productId) {
-        if (typeof products === 'undefined' || !productDetailContainer || !productDetailModal) {
+        if (!products.length || !productDetailContainer || !productDetailModal) {
             console.error("Cannot display product detail. Container, modal, or products array missing.");
             return;
         }
@@ -303,13 +324,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p class="product-detail-category"></p>
                     <p class="product-detail-price"></p>
                     <p class="product-detail-description"></p>
-                    <button class="btn btn-primary add-to-cart-from-detail" data-product-id="${product.id}">Add to Cart</button>
+                    <div class="product-page__actions">
+                        <button type="button" class="btn btn-primary add-to-cart-from-detail" data-product-id="${product.id}">Add to Cart</button>
+                        <a href="${product.detailUrl}" class="btn btn-secondary" data-bypass-card-click>View Full Page</a>
+                    </div>
                 </div>
             `;
              productDetailContainer.querySelector('.product-detail-image').alt = product.name;
              productDetailContainer.querySelector('.product-detail-name').textContent = product.name;
-             productDetailContainer.querySelector('.product-detail-category').textContent = `Category: ${product.category}`;
-             productDetailContainer.querySelector('.product-detail-price').textContent = `$${product.price.toFixed(2)}${product.unit || ''}`;
+             productDetailContainer.querySelector('.product-detail-category').textContent = `Category: ${product.categoryLabel || product.category}`;
+             productDetailContainer.querySelector('.product-detail-price').textContent = `$${product.price.toFixed(2)}${product.unit ? ` ${product.unit}` : ''}`;
              productDetailContainer.querySelector('.product-detail-description').textContent = product.description || 'No description available.';
 
              const detailButton = productDetailContainer.querySelector('.add-to-cart-from-detail');
@@ -329,10 +353,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!product) return '';
         // Removed description and add-to-cart button from card
         return `
-            <div class="product-card" data-id="${product.id}" data-category="${product.category}" data-name="${product.name}" data-price="${product.price}">
+            <div class="product-card" data-id="${product.id}" data-category="${product.category}" data-name="${product.name}" data-price="${product.price}" tabindex="0" role="button" aria-label="Quick view ${product.name}">
                  <img src="${product.imageSrc}" alt="${product.name}">
                  <h3>${product.name}</h3>
                  <p class="price">$${product.price.toFixed(2)}${product.unit ? ` <span>${product.unit}</span>` : ''}</p>
+                 <a href="${product.detailUrl}" class="product-card__detail-link" data-bypass-card-click>View full details</a>
             </div>
         `;
     }
@@ -343,6 +368,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Product Grid Click Handler (Handles clicks on cards -> Opens Detail Modal) ---
     function handleProductGridClick(event) {
+        if (event.target.closest('[data-bypass-card-click]')) return;
+
         const productCard = event.target.closest('.product-card');
         if (!productCard) return; // Click wasn't inside a card
 
@@ -357,6 +384,18 @@ document.addEventListener('DOMContentLoaded', () => {
         displayProductDetail(productId);
     }
 
+    function handleProductGridKeydown(event) {
+        if (event.target.closest('[data-bypass-card-click]')) return;
+
+        const productCard = event.target.closest('.product-card');
+        if (!productCard) return;
+
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            displayProductDetail(productCard.dataset.id);
+        }
+    }
+
     // ==================================
     // ATTACHING EVENT LISTENERS & INITIAL RENDERING
     // ==================================
@@ -364,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Homepage Bestseller Logic ---
     const bestsellerGrid = document.getElementById('bestseller-grid');
     if (bestsellerGrid) {
-         if (typeof products !== 'undefined' && typeof bestsellerIds !== 'undefined') {
+         if (products.length) {
             console.log("Setting up Bestsellers...");
             const bestsellerProducts = bestsellerIds.map(id => products.find(p => p.id === id)).filter(p => p !== undefined);
             bestsellerGrid.innerHTML = bestsellerProducts.length > 0
@@ -372,8 +411,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 : '<p class="no-products">No bestsellers found.</p>';
             // Attach the grid click handler AFTER rendering
             bestsellerGrid.addEventListener('click', handleProductGridClick);
+            bestsellerGrid.addEventListener('keydown', handleProductGridKeydown);
          } else {
-             console.error("Bestseller grid: 'products' or 'bestsellerIds' missing. Load products.js first.");
+             console.error("Bestseller grid data is missing.");
              bestsellerGrid.innerHTML = '<p class="no-products">Error loading bestseller data.</p>';
          }
     }
@@ -382,124 +422,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const categoryFilter = document.getElementById('category-filter');
     const sortOptions = document.getElementById('sort-options');
     const productGridShop = document.getElementById('product-grid-shop');
-    const searchInput = document.querySelector('.search-bar input');
-    const searchButton = document.querySelector('.search-bar button');
+    const shopFiltersForm = document.getElementById('shop-filters-form');
     
-    if (categoryFilter && sortOptions && productGridShop) {
-         if (typeof products !== 'undefined') {
-            console.log("Setting up Shop Page...");
-            
-            // Function to get URL parameter
-            function getUrlParameter(name) {
-                const urlParams = new URLSearchParams(window.location.search);
-                return urlParams.get(name);
-            }
-            
-            // Pre-fill search input from URL parameter
-            const urlSearchTerm = getUrlParameter('search');
-            if (urlSearchTerm && searchInput) {
-                searchInput.value = urlSearchTerm;
-            }
-            
-            // Pre-select category filter from URL parameter
-            const urlCategory = getUrlParameter('category');
-            if (urlCategory && categoryFilter) {
-                categoryFilter.value = urlCategory;
-            }
-            
-            // Pre-select sort from URL parameter
-            const urlSort = getUrlParameter('sort');
-            if (urlSort && sortOptions) {
-                sortOptions.value = urlSort;
-            }
-            
-            // Define display and filter/sort functions locally
-            function displayShopProducts(productsToDisplay) {
-                if (!productGridShop) return;
-                productGridShop.innerHTML = productsToDisplay.length === 0
-                    ? '<p class="no-products">No products found matching your criteria.</p>'
-                    : productsToDisplay.map(renderProductCardHTML).join(''); // Uses updated card renderer
-            }
-            
-            const filterAndSortProducts = () => {
-                const selectedCategory = categoryFilter.value;
-                const selectedSort = sortOptions.value;
-                const searchTerm = (searchInput ? searchInput.value : '').toLowerCase().trim();
-                
-                let filtered = products.filter(p => {
-                    // Category filter
-                    const categoryMatch = selectedCategory === 'all' || p.category === selectedCategory;
-                    // Search filter - search in name and description
-                    const searchMatch = searchTerm === '' || 
-                        p.name.toLowerCase().includes(searchTerm) || 
-                        (p.description && p.description.toLowerCase().includes(searchTerm));
-                    return categoryMatch && searchMatch;
-                });
-                
-                filtered.sort((a, b) => {
-                    const nameA = a.name.toLowerCase(); const nameB = b.name.toLowerCase();
-                    const priceA = a.price; const priceB = b.price;
-                    switch (selectedSort) {
-                        case 'price-asc': return priceA - priceB;
-                        case 'price-desc': return priceB - priceA;
-                        case 'name-asc': return nameA.localeCompare(nameB);
-                        case 'name-desc': return nameB.localeCompare(nameA);
-                        default: return 0;
-                    }
-                });
-                displayShopProducts(filtered);
-            };
-            
-            // Attach listeners and render initial state
-            categoryFilter.addEventListener('change', filterAndSortProducts);
-            sortOptions.addEventListener('change', filterAndSortProducts);
-            
-            // Search functionality
-            if (searchButton) {
-                searchButton.addEventListener('click', filterAndSortProducts);
-            }
-            if (searchInput) {
-                searchInput.addEventListener('keyup', (e) => {
-                    if (e.key === 'Enter') {
-                        filterAndSortProducts();
-                    }
-                    // Live search as you type
-                    filterAndSortProducts();
-                });
-            }
-            
-            filterAndSortProducts(); // Initial render
-            // Attach the grid click handler AFTER initial rendering
-            productGridShop.addEventListener('click', handleProductGridClick);
-         } else {
-             console.error("Shop grid: 'products' array missing. Load products.js first.");
-             productGridShop.innerHTML = '<p class="no-products">Error loading product data.</p>';
-         }
-    }
-    
-    // --- Homepage Search Functionality ---
-    const homepageSearchInput = document.querySelector('#home .search-bar input');
-    const homepageSearchButton = document.querySelector('#home .search-bar button');
-    
-    if (homepageSearchInput && homepageSearchButton) {
-        homepageSearchButton.addEventListener('click', () => {
-            const searchTerm = homepageSearchInput.value.toLowerCase().trim();
-            if (searchTerm) {
-                // Redirect to shop page with search query
-                window.location.href = `{% url 'shop' %}?search=${encodeURIComponent(searchTerm)}`;
-            }
-        });
-        
-        homepageSearchInput.addEventListener('keyup', (e) => {
-            if (e.key === 'Enter') {
-                const searchTerm = homepageSearchInput.value.toLowerCase().trim();
-                if (searchTerm) {
-                    window.location.href = `{% url 'shop' %}?search=${encodeURIComponent(searchTerm)}`;
-                }
-            }
+    if (shopFiltersForm && categoryFilter && sortOptions) {
+        [categoryFilter, sortOptions].forEach((field) => {
+            field.addEventListener('change', () => {
+                shopFiltersForm.submit();
+            });
         });
     }
 
+    if (productGridShop) {
+        productGridShop.addEventListener('click', handleProductGridClick);
+        productGridShop.addEventListener('keydown', handleProductGridKeydown);
+    }
+    
     // --- Modal Open/Close Listeners ---
     // Cart Modal
     if (cartIcon && cartModal && closeCartModalBtn) {
@@ -557,6 +494,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    document.addEventListener('click', (event) => {
+        const addToCartButton = event.target.closest('.add-to-cart-btn');
+        if (!addToCartButton) return;
+
+        const productId = addToCartButton.dataset.productId;
+        if (!productId) return;
+
+        addToCart(productId, 1);
+        addToCartButton.textContent = 'Added!';
+        addToCartButton.disabled = true;
+
+        window.setTimeout(() => {
+            if (document.body.contains(addToCartButton)) {
+                addToCartButton.textContent = 'Add to Cart';
+                addToCartButton.disabled = false;
+            }
+        }, 1200);
+    });
+
     // --- Cart Item Interactions (Quantity / Remove) Listener ---
      if (cartItemsContainer) {
         // Handles clicks on quantity +/- buttons and remove icon button
@@ -602,21 +558,81 @@ document.addEventListener('DOMContentLoaded', () => {
              // Check specifically for the checkout button IF it exists
               if (event.target.classList.contains('checkout-btn')) {
                   if (cart.length > 0) {
-                      alert(`Proceeding to checkout with ${cart.length} item type(s)! (Functionality not implemented)`);
-                      console.log("Checkout initiated with cart:", JSON.stringify(cart));
-                      cartModal.classList.remove('open');
-                      document.body.style.overflow = '';
-                      // Optional: Clear cart after checkout simulation
-                      // cart = []; saveCart(); updateCartCounter(); displayCartItems();
+                      let subtotal = 0;
+                      const lines = ['I would like to request an order for these items:', ''];
+
+                      cart.forEach((item) => {
+                          const product = products.find((candidate) => candidate.id === item.id);
+                          if (!product) return;
+                          const itemTotal = product.price * item.quantity;
+                          subtotal += itemTotal;
+                          lines.push(`- ${product.name} x${item.quantity} (${product.unit || 'item'}) - $${itemTotal.toFixed(2)}`);
+                      });
+
+                      lines.push('');
+                      lines.push(`Subtotal: $${subtotal.toFixed(2)}`);
+                      lines.push('Please confirm availability, delivery options, and payment details.');
+
+                      const checkoutParams = new URLSearchParams({
+                          topic: 'order',
+                          message: lines.join('\n'),
+                      });
+
+                      window.location.href = `${contactUrl}?${checkoutParams.toString()}`;
                   } else {
                       // This case shouldn't happen if button is replaced correctly, but good fallback
                       alert('Your cart is empty.');
                   }
-              }
+     }
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape') return;
+
+        if (cartModal && cartModal.classList.contains('open')) {
+            cartModal.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        if (productDetailModal && productDetailModal.classList.contains('open')) {
+            productDetailModal.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    });
               // Note: The 'Shop Now' link has its own temporary listener added in displayCartItems
           });
       }
 
+
+    // --- Cookie Consent Banner ---
+    if (cookieBanner) {
+        const storedCookieConsent = localStorage.getItem(COOKIE_CONSENT_KEY);
+        const cookieButtons = cookieBanner.querySelectorAll('[data-cookie-choice]');
+
+        if (storedCookieConsent === 'accepted' || storedCookieConsent === 'declined') {
+            applyCookieConsentState(storedCookieConsent);
+        } else {
+            cookieBanner.hidden = false;
+            requestAnimationFrame(() => {
+                cookieBanner.classList.add('is-visible');
+            });
+        }
+
+        cookieButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                const choice = button.dataset.cookieChoice;
+                if (!choice) {
+                    return;
+                }
+
+                localStorage.setItem(COOKIE_CONSENT_KEY, choice);
+                applyCookieConsentState(choice);
+                cookieBanner.classList.remove('is-visible');
+                window.setTimeout(() => {
+                    cookieBanner.hidden = true;
+                }, 250);
+            });
+        });
+    }
 
     // ==================================
     // INITIALIZATION
@@ -630,7 +646,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentYearSpan.textContent = currentLocalDate.getFullYear();
     }
 
-    console.log("FreshMart script fully loaded and initialized (v: Card Redesign + Dynamic Cart Title).");
+    console.log("Curated storefront script loaded.");
     console.log("Initial cart state:", cart);
 
 }); // End DOMContentLoaded

@@ -13,12 +13,13 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="{% block og_title %}GadgetWorld{% endblock %}">
     <meta property="og:description" content="{% block og_description %}Latest tech gadgets.{% endblock %}">
+    <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
+    <link rel="icon" type="image/svg+xml" href="{% static 'favicon.svg' %}">
     
     <!-- Canonical -->
-    <link rel="canonical" href="{% block canonical %}{% endblock %}">
+    <link rel="canonical" href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}">
     {% block extra_meta %}{% endblock %}
     
     <!-- Fonts & Icons -->
@@ -33,7 +34,7 @@
     
     {% block extra_css %}{% endblock %}
   </head>
-  <body>
+  <body data-shop-url="{% url 'shop' %}" data-contact-url="{% url 'contact' %}">
     <header class="header">
       <nav class="navbar container">
         <a href="{% url 'home' %}" class="logo">Curated</a>
@@ -54,21 +55,29 @@
           <li><a href="{% url 'contact' %}" {% if request.resolver_match.url_name == 'contact' %}class="active"{% endif %}>Contact</a></li>
         </ul>
         <div class="nav-icons">
-          <div class="cart-icon">
+          <button type="button" class="cart-icon" aria-label="Open shopping cart">
             <i class="fas fa-shopping-cart"></i>
             <span class="cart-count">0</span>
-          </div>
-          <button class="theme-toggle-btn" aria-label="Toggle Theme">
+          </button>
+          <button type="button" class="theme-toggle-btn" aria-label="Toggle Theme">
             <i class="fas fa-sun"></i> <i class="fas fa-moon"></i>
           </button>
-          <button class="menu-toggle" aria-label="Toggle Menu">
+          <button type="button" class="menu-toggle" aria-label="Toggle Menu">
             <i class="fas fa-bars"></i>
           </button>
         </div>
       </nav>
     </header>
 
-    <main>
+    {% if messages %}
+    <div class="site-messages container" aria-live="polite">
+      {% for message in messages %}
+      <div class="site-message site-message--{{ message.tags|default:'info' }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <main id="main-content">
       {% block content %}{% endblock %}
     </main>
 
@@ -92,7 +101,7 @@
                     <h4>Support</h4>
                     <ul>
                         <li><a href="{% url 'contact' %}">Contact</a></li>
-                        <li><a href="#">Help</a></li>
+                        <li><a href="{% url 'contact' %}?topic=general">Help</a></li>
                     </ul>
                 </div>
                 <div class="footer-links">
@@ -109,14 +118,14 @@
         </div>
     </footer>
 
-    <button class="scroll-top-btn" aria-label="Scroll to top">
+    <button type="button" class="scroll-top-btn" aria-label="Scroll to top">
       <i class="fas fa-arrow-up"></i>
     </button>
 
-    <div id="cart-modal" class="modal">
+    <div id="cart-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="cart-modal-title">
       <div class="modal-content">
         <button class="close-modal-btn" aria-label="Close cart popup">&times;</button>
-        <h2>Shopping Cart</h2>
+        <h2 id="cart-modal-title">Shopping Cart</h2>
         <div id="cart-items-container">
           <p class="cart-empty-msg" style="display: none">Your cart is empty.</p>
         </div>
@@ -124,13 +133,14 @@
           <strong>Subtotal:</strong> <span id="cart-subtotal">$0.00</span>
         </div>
         <div class="cart-actions">
-          <button class="btn btn-primary checkout-btn">Proceed to Checkout</button>
+          <button type="button" class="btn btn-primary checkout-btn">Request Order</button>
         </div>
       </div>
     </div>
-    <div id="product-detail-modal" class="modal">
+    <div id="product-detail-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="product-detail-modal-title">
       <div class="modal-content product-detail-content">
         <button class="close-modal-btn" aria-label="Close product details">&times;</button>
+        <h2 id="product-detail-modal-title" class="visually-hidden">Product Details</h2>
         <div id="product-detail-container"></div>
       </div>
     </div>
@@ -154,6 +164,7 @@
       </div>
     </div>
 
+    {{ catalog_products_payload|json_script:"products-data" }}
     {% block page_data %}{% endblock %}
     <script src="{% static 'script.js' %}"></script>
     {% block extra_js %}{% endblock %}

@@ -4,42 +4,48 @@
 {% block meta_description %}Browse our collection of gadgets and tech products. Find smartphones, laptops, wearables, audio equipment and gaming gear at great prices.{% endblock %}
 {% block og_title %}Shop All Gadgets | GadgetWorld{% endblock %}
 {% block og_description %}Browse our collection of gadgets and tech products at great prices.{% endblock %}
-{% block canonical %}/shop/{% endblock %}
+{% block canonical %}{{ request.scheme }}://{{ request.get_host }}{% url 'shop' %}{% endblock %}
+{% block og_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'shop' %}{% endblock %}
 
 {% block content %}
 <section class="shop-page container">
   <h1>Our Products</h1>
 
-  <div class="shop-controls">
+  {% if search_term %}
+  <p class="shop-summary">Showing results for "{{ search_term }}".</p>
+  {% endif %}
+
+  <form id="shop-filters-form" class="shop-controls" method="get" action="{% url 'shop' %}">
+    <input type="hidden" name="search" value="{{ search_term }}">
     <div class="filter-control">
       <label for="category-filter">Filter by Category:</label>
       <select id="category-filter" name="category">
-        <option value="all">All Categories</option>
-        <option value="smartphones">Smartphones</option>
-        <option value="laptops">Laptops</option>
-        <option value="accessories">Accessories</option>
-        <option value="footwear">Footwear</option>
-        <option value="groceries">Groceries</option>
+        <option value="all" {% if selected_category == 'all' %}selected{% endif %}>All Categories</option>
+        {% for category in available_categories %}
+        <option value="{{ category.value }}" {% if selected_category == category.value %}selected{% endif %}>{{ category.label }}</option>
+        {% endfor %}
       </select>
     </div>
     <div class="sort-control">
       <label for="sort-options">Sort by:</label>
       <select id="sort-options" name="sort">
-        <option value="default">Default</option>
-        <option value="price-asc">Price: Low to High</option>
-        <option value="price-desc">Price: High to Low</option>
-        <option value="name-asc">Name: A-Z</option>
-        <option value="name-desc">Name: Z-A</option>
+        <option value="default" {% if selected_sort == 'default' %}selected{% endif %}>Default</option>
+        <option value="price-asc" {% if selected_sort == 'price-asc' %}selected{% endif %}>Price: Low to High</option>
+        <option value="price-desc" {% if selected_sort == 'price-desc' %}selected{% endif %}>Price: High to Low</option>
+        <option value="name-asc" {% if selected_sort == 'name-asc' %}selected{% endif %}>Name: A-Z</option>
+        <option value="name-desc" {% if selected_sort == 'name-desc' %}selected{% endif %}>Name: Z-A</option>
       </select>
     </div>
-  </div>
+    <button type="submit" class="btn btn-secondary">Apply</button>
+  </form>
 
   <div id="product-grid-shop" class="product-grid">
     {% for product in products %}
-    <div class="product-card" data-id="{{ product.id }}" data-category="{{ product.category }}" data-name="{{ product.name }}" data-price="{{ product.price }}">
+    <div class="product-card" data-id="{{ product.id }}" data-category="{{ product.category }}" data-name="{{ product.name }}" data-price="{{ product.price }}" tabindex="0" role="button" aria-label="Quick view {{ product.name }}">
       <img src="{{ product.image_url }}" alt="{{ product.name }}">
       <h3>{{ product.name }}</h3>
       <p class="price">${{ product.price }}{% if product.unit %} <span>{{ product.unit }}</span>{% endif %}</p>
+      <a href="{{ product.get_absolute_url }}" class="product-card__detail-link" data-bypass-card-click>View full details</a>
     </div>
     {% empty %}
     <p class="no-products">No products found matching your criteria.</p>
@@ -47,16 +53,3 @@
   </div>
 </section>
 {% endblock %}
-
-{% block page_data %}
-{% autoescape off %}
-<script>
-  const products = [
-    {% for product in products %}
-    {"id": "{{ product.id }}", "name": "{{ product.name|escapejs }}", "category": "{{ product.category|escapejs }}", "price": {{ product.price|default:"0" }}, "unit": "{{ product.unit|escapejs }}", "description": "{{ product.description|escapejs }}", "imageSrc": "{{ product.image_url|escapejs }}"}{% if not forloop.last %},{% endif %}
-    {% endfor %}
-  ];
-</script>
-{% endautoescape %}
-{% endblock %}
-

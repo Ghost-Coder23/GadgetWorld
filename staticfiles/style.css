@@ -58,6 +58,36 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.site-messages {
+    padding-top: 1rem;
+}
+
+.site-message {
+    margin-bottom: 0.75rem;
+    padding: 0.95rem 1rem;
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--primary-green);
+    border-radius: 16px;
+    background: var(--card-bg);
+    box-shadow: var(--shadow);
+}
+
+.site-message--error {
+    border-left-color: #d14343;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -237,10 +267,21 @@ body.dark-mode .search-bar input::placeholder {
     position: relative;
     cursor: pointer;
     color: var(--icon-color);
+    background: none;
+    border: none;
+    padding: 0;
 }
 
 .cart-icon i {
     font-size: 1.4rem;
+}
+
+.cart-icon:focus-visible,
+.theme-toggle-btn:focus-visible,
+.menu-toggle:focus-visible,
+.scroll-top-btn:focus-visible {
+    outline: 3px solid rgba(68, 180, 68, 0.35);
+    outline-offset: 4px;
 }
 
 .cart-count {
@@ -502,6 +543,11 @@ body.dark-mode .promotional-section .btn-secondary {
     /* min-height: 300px; */
 }
 
+.product-card:focus-visible {
+    outline: 3px solid rgba(68, 180, 68, 0.3);
+    outline-offset: 4px;
+}
+
 .product-card:hover {
     transform: translateY(-6px); /* Keep existing hover */
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
@@ -531,6 +577,21 @@ body.dark-mode .product-card:hover {
     font-weight: 700;
     color: var(--primary-green);
     margin-bottom: 0; /* No space needed below price */
+}
+
+.product-card__detail-link {
+    margin-top: 1rem;
+    font-weight: 700;
+    color: var(--primary-green);
+}
+
+.product-card__detail-link:hover {
+    color: var(--secondary-green);
+}
+
+.shop-summary {
+    margin: -0.5rem 0 1.5rem;
+    opacity: 0.8;
 }
 
 .no-products {
@@ -1058,8 +1119,8 @@ body.dark-mode .cart-item {
     opacity: 0.7;
 }
 
-/* PRODUCT DETAILS MODEL STYLES */
-product-detail-content {
+/* PRODUCT DETAILS MODAL STYLES */
+.product-detail-content {
     /* Specific overrides if needed */
     max-width: 800px; /* Allow wider modal for details */
     max-height: 90vh;
@@ -1125,7 +1186,130 @@ product-detail-content {
     color: var(--text-color);
 }
 
+.product-page {
+    padding-top: 2rem;
+}
+
+.product-page__breadcrumb {
+    margin-bottom: 1.5rem;
+}
+
+.product-page__layout {
+    align-items: start;
+}
+
+.product-page__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
 .add-to-cart-from-detail {
     padding: 0.8rem 2rem;
     font-size: 1rem;
+}
+
+/* --- Cookie Banner --- */
+.cookie-banner {
+    position: fixed;
+    left: 50%;
+    bottom: 1rem;
+    transform: translateX(-50%) translateY(24px);
+    width: min(960px, calc(100% - 2rem));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
+    backdrop-filter: blur(12px);
+    z-index: 1200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+body.dark-mode .cookie-banner {
+    background: rgba(31, 31, 31, 0.96);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.cookie-banner.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+
+.cookie-banner__content {
+    min-width: 0;
+}
+
+.cookie-banner__title {
+    margin-bottom: 0.25rem;
+    font-family: var(--font-primary);
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.cookie-banner__text {
+    font-size: 0.94rem;
+    color: var(--text-color);
+    opacity: 0.88;
+}
+
+.cookie-banner__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.cookie-banner__btn {
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 0.7rem 1.15rem;
+    font-family: var(--font-primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.cookie-banner__btn:hover {
+    transform: translateY(-1px);
+}
+
+.cookie-banner__btn--primary {
+    background: var(--primary-green);
+    color: #fff;
+}
+
+.cookie-banner__btn--primary:hover {
+    background: var(--secondary-green);
+}
+
+.cookie-banner__btn--secondary {
+    background: transparent;
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+@media (max-width: 768px) {
+    .cookie-banner {
+        flex-direction: column;
+        align-items: stretch;
+        bottom: 0.75rem;
+        padding: 1rem;
+    }
+
+    .cookie-banner__actions {
+        width: 100%;
+    }
+
+    .cookie-banner__btn {
+        flex: 1;
+        text-align: center;
+    }
 }

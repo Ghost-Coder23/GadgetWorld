@@ -183,6 +183,14 @@
     opacity: 0.74;
 }
 
+.contact-form__status {
+    padding: 0.9rem 1rem;
+    border-radius: 16px;
+    border: 1px solid rgba(209, 67, 67, 0.24);
+    background: rgba(209, 67, 67, 0.08);
+    color: #8a1f1f;
+}
+
 .contact-fields {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -203,6 +211,12 @@
     font-size: 0.86rem;
     font-weight: 700;
     letter-spacing: 0.02em;
+}
+
+.field-errors {
+    color: #b42318;
+    font-size: 0.84rem;
+    line-height: 1.5;
 }
 
 .contact-form input,

@@ -1,4 +1,6 @@
 from django.contrib.sitemaps import Sitemap
+from django.urls import reverse
+
 from .models import Product
 
 class ProductSitemap(Sitemap):
@@ -12,7 +14,7 @@ class ProductSitemap(Sitemap):
         return None
     
     def location(self, obj):
-        return '/shop/'  # All products on shop page
+        return obj.get_absolute_url()
 
 
 class StaticViewSitemap(Sitemap):
@@ -23,15 +25,4 @@ class StaticViewSitemap(Sitemap):
         return ['home', 'shop', 'about', 'contact', 'privacy', 'terms']
     
     def location(self, view_name):
-        if view_name == 'home':
-            return '/'
-        elif view_name == 'shop':
-            return '/shop/'
-        elif view_name == 'about':
-            return '/about/'
-        elif view_name == 'contact':
-            return '/contact/'
-        elif view_name == 'privacy':
-            return '/privacy-policy/'
-        elif view_name == 'terms':
-            return '/terms-and-conditions/'
+        return reverse(view_name)

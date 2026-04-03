@@ -5,7 +5,8 @@
 {% block meta_description %}Read how Curated collects, uses, stores, and protects your personal information when you use our website and services.{% endblock %}
 {% block og_title %}Privacy Policy - Curated{% endblock %}
 {% block og_description %}Learn how Curated handles your personal data, orders, cookies, and communication preferences.{% endblock %}
-{% block canonical %}/privacy-policy/{% endblock %}
+{% block canonical %}{{ request.scheme }}://{{ request.get_host }}{% url 'privacy' %}{% endblock %}
+{% block og_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'privacy' %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'legal.css' %}" />
