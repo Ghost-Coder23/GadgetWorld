@@ -14,15 +14,15 @@
 {% block content %}
 <div class="admin-hero">
   <div>
-    <p class="admin-hero__eyebrow">{% translate 'Control room' %}</p>
-    <h1>{% translate 'Run the store with a little more clarity.' %}</h1>
+    <p class="admin-hero__eyebrow">{% translate 'Storefront admin' %}</p>
+    <h1>{% translate 'Manage standout tech in one place.' %}</h1>
     <p class="admin-hero__copy">
-      {% translate 'Manage products, promotions, customer messages, and orders from a workspace tuned for the GadgetWorld team.' %}
+      {% translate 'Refresh products, keep promotions sharp, follow up on customer messages, and move orders forward from a workspace that feels like the rest of Curated.' %}
     </p>
   </div>
   <div class="admin-hero__actions">
     {% if perms.gadget1.add_product %}
-      <a class="button default" href="{% url 'admin:gadget1_product_add' %}">{% translate 'Add product' %}</a>
+      <a class="button admin-button-secondary" href="{% url 'admin:gadget1_product_add' %}">{% translate 'Add product' %}</a>
     {% endif %}
     {% if perms.gadget1.view_order %}
       <a class="button" href="{% url 'admin:gadget1_order_changelist' %}">{% translate 'Review orders' %}</a>
@@ -66,7 +66,7 @@
     <div class="admin-section-heading">
       <div>
         <p class="admin-section-heading__eyebrow">{% translate 'Workspace' %}</p>
-        <h2>{% translate 'All admin areas' %}</h2>
+        <h2>{% translate 'Everything you can manage' %}</h2>
       </div>
       <p>
         {% blocktranslate count counter=app_list|length %}{{ counter }} app available for management.{% plural %}{{ counter }} apps available for management.{% endblocktranslate %}

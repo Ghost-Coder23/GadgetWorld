@@ -19,12 +19,10 @@
 {% block branding %}
 <div class="admin-brand">
   <a class="admin-brand__link" href="{% url 'admin:index' %}">
-    <span class="admin-brand__mark" aria-hidden="true">C</span>
-    <span class="admin-brand__text">
-      <span class="admin-brand__eyebrow">Curated</span>
-      <span class="admin-brand__title">{{ site_header|default:_('Django administration') }}</span>
-    </span>
+    <span class="admin-brand__title">Curated</span>
+    <span class="admin-brand__pill">{% translate 'Admin' %}</span>
   </a>
+  <p class="admin-brand__caption">{% translate 'Inventory, orders, and customer support in one place.' %}</p>
 </div>
 {% if user.is_anonymous %}
   {% include "admin/color_theme_toggle.html" %}
