@@ -846,86 +846,70 @@ html[data-theme="dark"] .admin-action-meta {
 
 body.login {
     background:
-        radial-gradient(circle at top right, rgba(255, 235, 59, 0.14), transparent 20%),
-        radial-gradient(circle at bottom left, rgba(68, 180, 68, 0.12), transparent 24%),
+        radial-gradient(circle at top right, rgba(255, 235, 59, 0.12), transparent 18%),
+        radial-gradient(circle at top left, rgba(68, 180, 68, 0.08), transparent 22%),
         linear-gradient(180deg, var(--body-bg) 0%, var(--gw-soft-bg) 100%);
 }
 
 html[data-theme="dark"] body.login {
     background:
-        radial-gradient(circle at top right, rgba(240, 230, 140, 0.12), transparent 20%),
-        radial-gradient(circle at bottom left, rgba(92, 184, 92, 0.14), transparent 24%),
+        radial-gradient(circle at top right, rgba(240, 230, 140, 0.1), transparent 18%),
+        radial-gradient(circle at top left, rgba(92, 184, 92, 0.12), transparent 22%),
         linear-gradient(180deg, var(--body-bg) 0%, #252825 100%);
 }
 
 .admin-login-shell {
-    display: grid;
-    grid-template-columns: minmax(0, 1.25fr) minmax(20rem, 30rem);
-    gap: 1.25rem;
-    align-items: stretch;
+    max-width: 30rem;
+    margin: 0 auto;
 }
 
-.admin-login-panel,
 .admin-login-card {
     padding: 2rem;
     border: 1px solid var(--border-color);
     border-radius: 24px;
-    box-shadow: var(--card-shadow);
-}
-
-.admin-login-panel {
-    background:
-        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.48)),
-        url("../../images/herobackground.png") no-repeat center center / cover;
-    color: #ffffff;
-}
-
-.admin-login-panel__eyebrow {
-    background: rgba(255, 235, 59, 0.9);
-    color: #333333;
-}
-
-.admin-login-panel h1 {
-    margin: 0.9rem 0;
-    color: #ffffff !important;
-    font-size: 2.3rem !important;
-}
-
-.admin-login-panel p {
-    max-width: 34rem;
-    color: rgba(255, 255, 255, 0.88);
-}
-
-.admin-login-highlights {
-    margin: 1.6rem 0 0;
-    padding: 0;
-}
-
-.admin-login-highlights li {
-    list-style: none;
-    margin-bottom: 0.75rem;
-    padding: 0.95rem 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.admin-login-card {
     background: var(--surface-bg);
+    box-shadow: var(--card-shadow-lift);
 }
 
-.admin-login-card__header {
-    margin-bottom: 1.25rem;
+.admin-login-card--single {
+    backdrop-filter: blur(10px);
 }
 
-.admin-login-card__header h2 {
-    margin: 0.45rem 0 0;
-    font-size: 1.55rem;
+.login #header {
+    position: static;
+}
+
+.login .main {
+    min-height: calc(100vh - 96px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 3.25rem;
+}
+
+.login #content {
+    width: 100%;
+    max-width: 30rem;
+}
+
+.admin-login-intro {
+    margin-bottom: 1.5rem;
+}
+
+.admin-login-intro h1 {
+    margin: 0.8rem 0 0.7rem;
+    font-size: 2rem !important;
+}
+
+.admin-login-intro p {
+    margin: 0;
+    color: var(--body-quiet-color);
 }
 
 .login .form-row {
-    padding-left: 0;
-    padding-right: 0;
+    margin-bottom: 1rem;
+    padding: 0;
+    border-bottom: 0;
 }
 
 .login .form-row label {
@@ -933,21 +917,39 @@ html[data-theme="dark"] body.login {
     margin-bottom: 0.45rem;
 }
 
+.login .form-row input {
+    width: 100%;
+}
+
 .login .submit-row {
-    padding: 1.1rem 0 0;
+    display: block;
+    padding: 1rem 0 0;
     border: 0;
     background: transparent;
     box-shadow: none;
 }
 
+.login .submit-row input {
+    width: 100%;
+    margin: 0;
+}
+
 .password-reset-link {
-    margin-top: 0.95rem;
+    margin-top: 0.15rem;
+    font-size: 0.92rem;
+}
+
+.admin-login-meta {
+    margin: 1.4rem 0 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--hairline-color);
+    color: var(--body-quiet-color);
+    font-size: 0.92rem;
 }
 
 @media (max-width: 1100px) {
     .admin-hero,
-    .admin-dashboard-grid,
-    .admin-login-shell {
+    .admin-dashboard-grid {
         grid-template-columns: 1fr;
     }
 
@@ -970,12 +972,11 @@ html[data-theme="dark"] body.login {
 
     #content h1,
     .admin-hero h1,
-    .admin-login-panel h1 {
+    .admin-login-intro h1 {
         font-size: 1.8rem !important;
     }
 
     .admin-hero,
-    .admin-login-panel,
     .admin-login-card,
     #changelist,
     .module table th,
@@ -985,11 +986,14 @@ html[data-theme="dark"] body.login {
     }
 
     .admin-hero,
-    .admin-login-panel,
     .admin-login-card {
         padding-top: 1.35rem;
         padding-bottom: 1.35rem;
         border-radius: 18px;
+    }
+
+    .login .main {
+        padding-top: 2rem;
     }
 
     #changelist-search > div {

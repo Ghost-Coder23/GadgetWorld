@@ -17,23 +17,13 @@
 
 {% block content %}
 <div id="content-main" class="admin-login-shell">
-  <section class="admin-login-panel">
-    <p class="admin-login-panel__eyebrow">{% translate 'Curated admin' %}</p>
-    <h1>{% translate 'Manage standout tech behind the scenes.' %}</h1>
-    <p>
-      {% translate 'Sign in to refresh the catalog, stay on top of incoming orders, and keep the storefront experience consistent from the back office.' %}
-    </p>
-    <ul class="admin-login-highlights">
-      <li>{% translate 'Update products and promotions with the same clean visual tone as the storefront.' %}</li>
-      <li>{% translate 'Track incoming orders and customer enquiries without digging through clutter.' %}</li>
-      <li>{% translate 'Keep the admin side feeling familiar, bright, and easy to move through.' %}</li>
-    </ul>
-  </section>
-
-  <section class="admin-login-card">
-    <div class="admin-login-card__header">
+  <section class="admin-login-card admin-login-card--single">
+    <div class="admin-login-intro">
       <p class="admin-login-card__eyebrow">{% translate 'Secure access' %}</p>
-      <h2>{% translate 'Admin sign in' %}</h2>
+      <h1>{% translate 'Sign in to the admin panel' %}</h1>
+      <p>
+        {% translate 'Use your staff account to manage products, orders, promotions, and customer enquiries.' %}
+      </p>
     </div>
 
     {% if form.errors and not form.non_field_errors %}
@@ -78,6 +68,10 @@
         <input type="submit" value="{% translate 'Log in' %}">
       </div>
     </form>
+
+    <p class="admin-login-meta">
+      {% translate 'Only authorized staff accounts can access this area.' %}
+    </p>
   </section>
 </div>
 {% endblock %}
