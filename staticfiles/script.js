@@ -558,24 +558,14 @@ document.addEventListener('DOMContentLoaded', () => {
              // Check specifically for the checkout button IF it exists
               if (event.target.classList.contains('checkout-btn')) {
                   if (cart.length > 0) {
-                      let subtotal = 0;
-                      const lines = ['I would like to request an order for these items:', ''];
-
-                      cart.forEach((item) => {
-                          const product = products.find((candidate) => candidate.id === item.id);
-                          if (!product) return;
-                          const itemTotal = product.price * item.quantity;
-                          subtotal += itemTotal;
-                          lines.push(`- ${product.name} x${item.quantity} (${product.unit || 'item'}) - $${itemTotal.toFixed(2)}`);
-                      });
-
-                      lines.push('');
-                      lines.push(`Subtotal: $${subtotal.toFixed(2)}`);
-                      lines.push('Please confirm availability, delivery options, and payment details.');
-
                       const checkoutParams = new URLSearchParams({
                           topic: 'order',
-                          message: lines.join('\n'),
+                          cart: JSON.stringify(
+                              cart.map((item) => ({
+                                  id: item.id,
+                                  quantity: item.quantity
+                              }))
+                          ),
                       });
 
                       window.location.href = `${contactUrl}?${checkoutParams.toString()}`;

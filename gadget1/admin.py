@@ -4,6 +4,10 @@ from django.utils.html import format_html
 
 from .models import ContactSubmission, Order, OrderItem, Product, Promotion
 
+admin.site.site_header = 'Curated Admin'
+admin.site.site_title = 'Curated Control Room'
+admin.site.index_title = 'Inventory, orders, and customer operations'
+
 # Register your models here.
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):

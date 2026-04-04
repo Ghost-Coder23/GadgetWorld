@@ -1,0 +1,108 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static log %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static "admin/css/dashboard.css" %}">{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block nav-breadcrumbs %}{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content %}
+<div class="admin-hero">
+  <div>
+    <p class="admin-hero__eyebrow">{% translate 'Control room' %}</p>
+    <h1>{% translate 'Run the store with a little more clarity.' %}</h1>
+    <p class="admin-hero__copy">
+      {% translate 'Manage products, promotions, customer messages, and orders from a workspace tuned for the GadgetWorld team.' %}
+    </p>
+  </div>
+  <div class="admin-hero__actions">
+    {% if perms.gadget1.add_product %}
+      <a class="button default" href="{% url 'admin:gadget1_product_add' %}">{% translate 'Add product' %}</a>
+    {% endif %}
+    {% if perms.gadget1.view_order %}
+      <a class="button" href="{% url 'admin:gadget1_order_changelist' %}">{% translate 'Review orders' %}</a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="admin-quick-grid">
+  {% if perms.gadget1.view_product %}
+    <a class="admin-quick-card" href="{% url 'admin:gadget1_product_changelist' %}">
+      <span class="admin-quick-card__eyebrow">{% translate 'Catalog' %}</span>
+      <strong>{% translate 'Products' %}</strong>
+      <p>{% translate 'Update pricing, categories, imagery, and bestseller status.' %}</p>
+    </a>
+  {% endif %}
+  {% if perms.gadget1.view_order %}
+    <a class="admin-quick-card" href="{% url 'admin:gadget1_order_changelist' %}">
+      <span class="admin-quick-card__eyebrow">{% translate 'Fulfillment' %}</span>
+      <strong>{% translate 'Orders' %}</strong>
+      <p>{% translate 'Review customer details, line items, and order state changes.' %}</p>
+    </a>
+  {% endif %}
+  {% if perms.gadget1.view_promotion %}
+    <a class="admin-quick-card" href="{% url 'admin:gadget1_promotion_changelist' %}">
+      <span class="admin-quick-card__eyebrow">{% translate 'Merchandising' %}</span>
+      <strong>{% translate 'Promotions' %}</strong>
+      <p>{% translate 'Refresh homepage campaigns and reorder the active messaging.' %}</p>
+    </a>
+  {% endif %}
+  {% if perms.gadget1.view_contactsubmission %}
+    <a class="admin-quick-card" href="{% url 'admin:gadget1_contactsubmission_changelist' %}">
+      <span class="admin-quick-card__eyebrow">{% translate 'Inbox' %}</span>
+      <strong>{% translate 'Customer messages' %}</strong>
+      <p>{% translate 'Track new enquiries and jump straight into linked orders.' %}</p>
+    </a>
+  {% endif %}
+</div>
+
+<div class="admin-dashboard-grid">
+  <div id="content-main">
+    <div class="admin-section-heading">
+      <div>
+        <p class="admin-section-heading__eyebrow">{% translate 'Workspace' %}</p>
+        <h2>{% translate 'All admin areas' %}</h2>
+      </div>
+      <p>
+        {% blocktranslate count counter=app_list|length %}{{ counter }} app available for management.{% plural %}{{ counter }} apps available for management.{% endblocktranslate %}
+      </p>
+    </div>
+    {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+  </div>
+
+  <div id="content-related">
+    <div class="module" id="recent-actions-module">
+      <h2>{% translate 'Recent actions' %}</h2>
+      <h3>{% translate 'My actions' %}</h3>
+      {% get_admin_log 10 as admin_log for_user user %}
+      {% if not admin_log %}
+        <p>{% translate 'None available yet.' %}</p>
+      {% else %}
+        <ul class="actionlist">
+          {% for entry in admin_log %}
+            <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
+              {% if entry.is_deletion or not entry.get_admin_url %}
+                {{ entry.object_repr }}
+              {% else %}
+                <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+              {% endif %}
+              <span class="admin-action-meta">
+                {% if entry.content_type %}
+                  {% filter capfirst %}{{ entry.content_type.name }}{% endfilter %}
+                {% else %}
+                  {% translate 'Unknown content' %}
+                {% endif %}
+              </span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
