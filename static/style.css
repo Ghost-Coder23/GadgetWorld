@@ -769,7 +769,7 @@ body.dark-mode .product-card:hover {
         grid-template-columns: repeat(2, 1fr); /* 2 columns on smallest screens */
     }
     .product-grid {
-        grid-template-columns: 1fr; /* Single column */
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on small mobile */
     }
     .logo {
         font-size: 1.5rem;

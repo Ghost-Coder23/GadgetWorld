@@ -1,7 +1,8 @@
-# TODO: Steps to Complete ALLOWED_HOSTS Update Plan
+# Mobile Shop Grid: 2-Column Update
 
-1. ✅ Create TODO.md with task steps
-2. ✅ Edit GadgetWorld/settings.py to update ALLOWED_HOSTS to allow all hosts (['*'])
-3. Test the change (runserver should work without host errors)
-4. Mark complete and attempt_completion
-  12345678
+## Steps:
+- [x] 1. Edit static/style.css: Change @media (max-width: 480px) .product-grid to repeat(2, 1fr)
+- [ ] 2. Optional: Adjust .product-card padding/image for narrow cols
+- [ ] 3. Refresh server (/shop/) and test on mobile device
+- [ ] 4. Run python manage.py collectstatic (if needed)
+- [ ] 5. Mark complete
