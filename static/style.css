@@ -361,15 +361,8 @@ body.dark-mode .theme-toggle-btn .fa-moon { display: inline; } /* Show moon in d
 
 /* --- Hero Section --- */
 .hero-section {
-    background:
-        /* Top layer: Overlay Gradient */
-        /* Adjust RGBA values for color and opacity (0.4 = 40% opaque black) */
-        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-
-        /* Bottom layer: Background Image */    
-        /* Replace 'images/hero-background.jpg' with the actual path to your image */
-        /* Ensure the path is relative to your CSS file location */
-        url('images/herobackground.png') no-repeat center center/cover;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+            url("/static/images/herobackground.png") no-repeat center center/cover;
         color: var(--light-bg);
     text-align: center;
     padding: 6rem 0;
