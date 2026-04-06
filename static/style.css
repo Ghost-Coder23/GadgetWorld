@@ -516,6 +516,7 @@ body.dark-mode .promotional-section .btn-secondary {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Keep this */
     gap: 1.5rem;
     justify-items: center; /* Add this line */
+    align-items: start; /* Uniform heights for bestseller/home grid */
 }
 
 /* Find your existing .product-card rule */
@@ -532,7 +533,12 @@ body.dark-mode .promotional-section .btn-secondary {
     cursor: pointer; /* ADD THIS - Indicates the whole card is clickable */
     display: flex;
     flex-direction: column;
-    min-height: 380px; /* Uniform height for grid alignment */
+    min-height: 320px; /* Shorter uniform height for mobile 2-col grid */
+    
+    /* Ensure consistent heights across all product grids (shop + home bestsellers) */
+    align-self: stretch;
+
+
 }
 
 .product-card:focus-visible {
