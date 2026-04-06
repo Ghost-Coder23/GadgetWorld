@@ -532,8 +532,7 @@ body.dark-mode .promotional-section .btn-secondary {
     cursor: pointer; /* ADD THIS - Indicates the whole card is clickable */
     display: flex;
     flex-direction: column;
-    /* Optional: Set a min-height for visual consistency */
-    /* min-height: 300px; */
+    min-height: 380px; /* Uniform height for grid alignment */
 }
 
 .product-card:focus-visible {
@@ -556,6 +555,12 @@ body.dark-mode .product-card:hover {
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 1rem;
+}
+
+@media (max-width: 480px) {
+    .product-card img {
+        height: 160px;
+    }
 }
 
 .product-card h3 {
